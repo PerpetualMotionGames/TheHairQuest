@@ -65,10 +65,10 @@ public class TileSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (Input.GetKeyDown(KeyCode.Return) && canSwap &&LegalSwap())
+		if (Input.GetKeyDown(KeyCode.Return) && canSwap && LegalSwap())
 		{
 			SwitchTileState();
-			LegalSwap();
+			GameObject.Find("AudioController").GetComponent<AudioSwitch>().SwitchSound();
 		}
     }
 
