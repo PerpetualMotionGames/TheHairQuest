@@ -30,7 +30,10 @@ public class PlayerController : MonoBehaviour {
         // calculate animation effects
         moveHorizontal = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-        if(falling) //animator.SetBool("IsJumping", false);
+        if(falling)
+		{ 
+			//animator.SetBool("IsJumping", false);
+		}
 
         if (Input.GetButtonDown("Jump")) {
             if (!grounded) {
