@@ -30,24 +30,24 @@ public class PlayerController : MonoBehaviour {
         // calculate animation effects
         moveHorizontal = Input.GetAxisRaw("Horizontal") * runSpeed;
 
-        if(falling) animator.SetBool("IsJumping", false);
+        if(falling) //animator.SetBool("IsJumping", false);
 
         if (Input.GetButtonDown("Jump")) {
             if (!grounded) {
                 if (canDoubleJump){
                     jump = true;
                     canDoubleJump = false;
-                    animator.SetBool("DoubleJump", true);
-                    animator.SetBool("IsJumping", true);
+                    //animator.SetBool("DoubleJump", true);
+                    //animator.SetBool("IsJumping", true);
                 }
             } else {
                 jump = true;
-                animator.SetBool("IsJumping", true);
+                //animator.SetBool("IsJumping", true);
             }
         }
 
-        animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
-        animator.SetBool("IsFalling", falling);
+        //animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
+        //animator.SetBool("IsFalling", falling);
         OrientPlayer();
     }
 
@@ -85,9 +85,9 @@ public class PlayerController : MonoBehaviour {
 
     public void OnLanded(){
         canDoubleJump = true;
-        animator.SetBool("DoubleJump", false);
-        animator.SetBool("IsJumping", false);
-        animator.SetBool("IsFalling", false);
+        //animator.SetBool("DoubleJump", false);
+        //animator.SetBool("IsJumping", false);
+        //animator.SetBool("IsFalling", false);
     }
 
     private void OrientPlayer()
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    bool Grounded() {
+    public bool Grounded() {
         // check left foot
         Vector3 bottomPosition = leftFoot.transform.position;
         // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
