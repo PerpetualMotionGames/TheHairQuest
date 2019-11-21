@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.SceneManagement;
 public class TileSwitch : MonoBehaviour
 {
 	public Tilemap[] tileStates; // for the two maps of the game world
@@ -14,13 +15,15 @@ public class TileSwitch : MonoBehaviour
 	LensDistortion distortion;
 	private bool canSwap = true;
 
-	public float swapTransitionTime = 0.5f;
+	public float swapTransitionTime = 0.25f;
 	public float maxLensDistort = 30f;
 	public float minAlpha = 0.2f; //transparency of the inactive layer
 
     void Start()
     {
 		UpdateTileCollider();
+		SetAlpha(tileStates[0], 1);
+		SetAlpha(tileStates[1], 0.2f);
 		vol.profile.TryGetSettings(out distortion);
     }
 
@@ -29,6 +32,11 @@ public class TileSwitch : MonoBehaviour
 		Color mapCol = map.color;
 		mapCol.a = alpha;
 		map.color = mapCol;
+	}
+	public void InstantSwapAlpha()
+	{
+		SetAlpha(tileStates[0], tileStates[0].color.a == 1 ? 0.2f : 1);
+		SetAlpha(tileStates[1], tileStates[1].color.a == 1 ? 0.2f : 1);
 	}
 	public void SwitchTileState()
 	{
@@ -70,12 +78,41 @@ public class TileSwitch : MonoBehaviour
 			SwitchTileState();
 			GameObject.Find("AudioController").GetComponent<AudioSwitch>().SwitchSound();
 		}
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			InstantSwapAlpha();
+		}
+		if (Input.GetKeyUp(KeyCode.LeftShift))
+		{
+			InstantSwapAlpha();
+		}
+		if (Input.GetKeyDown(KeyCode.R))
+		{
+			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		}
+		//touching ladder
+		bool onladder = false;
+		if (tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)) != null)
+		{
+			Debug.Log(tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)).name);
+			onladder = tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)).name == "jungleTilemap_28";
+		}
+		if(onladder)
+		{
+			gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);
+			if (Input.GetKey(KeyCode.UpArrow))
+			{
+				transform.position += Vector3.up * Time.deltaTime * 3f;
+				gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+			}
+			
+		}
     }
 
 	IEnumerator SwapEffect()
 	{
 		var alph = 1f;
-
+		UpdateTileCollider();
 		canSwap = false;
 		while ( distortion.intensity.value > -maxLensDistort)
 		{
@@ -85,7 +122,9 @@ public class TileSwitch : MonoBehaviour
 			SetAlpha(tileStates[activeTileSet], 1.2f - alph);
 			yield return new WaitForEndOfFrame();
 		}
-		UpdateTileCollider();
+		SetAlpha(tileStates[1 - activeTileSet], .2f);
+		SetAlpha(tileStates[activeTileSet], 1);
+
 		while (distortion.intensity.value < 0)
 		{
 			distortion.intensity.value += maxLensDistort * Time.deltaTime / swapTransitionTime;
