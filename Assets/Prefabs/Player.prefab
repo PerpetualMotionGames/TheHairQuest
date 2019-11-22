@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4354876668035933478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.22, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4354876669132535573}
   - {fileID: 4354876669349647948}
@@ -140,8 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55af6572530184842ac7e23d15239a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 3
-  jumpForce: 3
+  runSpeed: 5
+  jumpForce: 4
   animator: {fileID: 4354876668035933477}
   rb2d: {fileID: 4354876668035933473}
   scaleModifier: 1
@@ -198,6 +198,7 @@ MonoBehaviour:
   swapTransitionTime: 0.5
   maxLensDistort: 30
   minAlpha: 0.2
+  hueChange: 30
   frontAlph: 1
   backAlph: 0.2
 --- !u!1 &4354876669132535574
