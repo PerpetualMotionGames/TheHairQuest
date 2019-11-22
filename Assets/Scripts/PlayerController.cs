@@ -5,13 +5,12 @@ public class PlayerController : MonoBehaviour {
 
     public float runSpeed;
     public float jumpForce;
-    public Animator animator;
-    public Rigidbody2D rb2d;
-    public float scaleModifier; // this is to convert the players scale into meters
     public float moveAcceleration;
-    public GameObject leftFoot;
-    public GameObject rightFoot;
-
+    
+    private GameObject leftFoot;
+    private GameObject rightFoot;
+    private Rigidbody2D rb2d;
+    private Animator animator;
     private float moveHorizontal = 0f;
     private bool jump = false;
     private bool falling = false;
@@ -21,7 +20,10 @@ public class PlayerController : MonoBehaviour {
  
     // Start is called before the first frame update
     void Start() {
-        
+        leftFoot = GameObject.Find("LeftFoot");
+        rightFoot = GameObject.Find("RightFoot");
+        rb2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -64,13 +66,13 @@ public class PlayerController : MonoBehaviour {
 
         falling = velocity.y < 0 && !grounded;
         velocity.x += moveHorizontal * moveAcceleration * Time.fixedDeltaTime;
-        if (velocity.x > runSpeed * scaleModifier){
-            velocity.x = runSpeed * scaleModifier;
-        } else if (velocity.x < -runSpeed * scaleModifier){
-            velocity.x = -runSpeed * scaleModifier;
+        if (velocity.x > runSpeed){
+            velocity.x = runSpeed;
+        } else if (velocity.x < -runSpeed){
+            velocity.x = -runSpeed;
         }
         if (jump) {
-            velocity.y = jumpForce * scaleModifier;
+            velocity.y = jumpForce;
         }
         rb2d.velocity = velocity;
         jump = false;

@@ -4,36 +4,42 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
 
-    public GameObject objectToFollow;
     public float offsetLeft;
     public float offsetDown;
     public bool lockX;
     public bool lockY;
-    public GameObject boundingBox;
+    
+    private GameObject cameraBounds;
+    private GameObject player;
+
+    private void Start() {
+        cameraBounds = GameObject.Find("CameraBounds");
+        player = GameObject.Find("Player");
+    }
 
     void LateUpdate() {
 
-        float objectX = objectToFollow.transform.position.x;
+        float playerX = player.transform.position.x;
         float x = transform.position.x;
-        float objectY = objectToFollow.transform.position.y;
+        float playerY = player.transform.position.y;
         float y = transform.position.y;
 
         // the way the movement is handled, allows the camera to move only if you're passing the center of the screen, 
         // or are past the offset, this way the camera will not lock onto you and makes it smoother overall
         if (!lockX) {
-            // move the camera if the object is passed the center, or left of the offset
-            if (objectX > x) {
-                x = objectX;
-            } else if (objectX < (x - offsetLeft)) {
-                x = objectX + offsetLeft;
+            // move the camera if the player is passed the center, or left of the offset
+            if (playerX > x) {
+                x = playerX;
+            } else if (playerX < (x - offsetLeft)) {
+                x = playerX + offsetLeft;
             }
         }
         if (!lockY) {
-            // move the camera if the object is passed the center, or below the offset
-            if (objectY > y) {
-                y = objectY;
-            } else if (objectY < (y - offsetDown)) {
-                y = objectY + offsetDown;
+            // move the camera if the player is passed the center, or below the offset
+            if (playerY > y) {
+                y = playerY;
+            } else if (playerY < (y - offsetDown)) {
+                y = playerY + offsetDown;
             }
         }
 
@@ -43,10 +49,10 @@ public class CameraController : MonoBehaviour {
         // careful of the order below, Screen.width is int not float so will be rounded
         float width = height * Screen.width / Screen.height;
 
-        float leftBound = boundingBox.transform.position.x - (boundingBox.transform.localScale.x / 2);
-        float rightBound = boundingBox.transform.position.x + (boundingBox.transform.localScale.x / 2);
-        float lowerBound= boundingBox.transform.position.y - (boundingBox.transform.localScale.y / 2);
-        float upperBound = boundingBox.transform.position.y + (boundingBox.transform.localScale.y / 2);
+        float leftBound = cameraBounds.transform.position.x - (cameraBounds.transform.localScale.x / 2);
+        float rightBound = cameraBounds.transform.position.x + (cameraBounds.transform.localScale.x / 2);
+        float lowerBound= cameraBounds.transform.position.y - (cameraBounds.transform.localScale.y / 2);
+        float upperBound = cameraBounds.transform.position.y + (cameraBounds.transform.localScale.y / 2);
 
         if (x - width < leftBound) {
             x = leftBound + width;
