@@ -3624,6 +3624,12 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &702038650 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4354876668035933478, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1434091924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1011118672
 GameObject:
   m_ObjectHideFlags: 0
@@ -3939,6 +3945,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4354876668035933487, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+        type: 3}
+      propertyPath: vol
+      value: 
+      objectReference: {fileID: 2105842429}
+    - target: {fileID: 4354876668035933487, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+        type: 3}
+      propertyPath: tileStates.Array.data[0]
+      value: 
+      objectReference: {fileID: 1672464708}
+    - target: {fileID: 4354876668035933487, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+        type: 3}
+      propertyPath: tileStates.Array.data[1]
+      value: 
+      objectReference: {fileID: 17356888}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6c6d0efd6b60854c8c40b1e60cc75ea, type: 3}
 --- !u!1 &1468047718 stripped
@@ -5497,6 +5518,18 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!114 &2105842429 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7472409747523378812, guid: 17fcb2ee5d0c93245961b461a24ea3ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 7472409748659333555}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5907704252621703896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5637,7 +5670,7 @@ PrefabInstance:
         type: 3}
       propertyPath: objectToFollow
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 702038650}
     - target: {fileID: 7472409747523378813, guid: 17fcb2ee5d0c93245961b461a24ea3ee,
         type: 3}
       propertyPath: boundingBox
