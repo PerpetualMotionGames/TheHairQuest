@@ -68,10 +68,10 @@ public class TileSwitch : MonoBehaviour
 		if (gameObject.GetComponent<PlayerController>().Grounded())
 		{
 			Vector3Int belowPoint = tileStates[activeTileSet].WorldToCell(transform.position + Vector3.down / 2);
-			string name = tileStates[activeTileSet].GetTile(belowPoint).name;
-			if(name=="jungleTilemap_1" || name == "jungleTilemap_4"){
-				return true;
-			}
+			//string name = tileStates[activeTileSet].GetTile(belowPoint).name;
+			//if(name=="jungleTilemap_1" || name == "jungleTilemap_4"){
+			//	return true;
+			//}
 		}
 		return true; //this should be return false but for now we will just allow changing whenever
 
