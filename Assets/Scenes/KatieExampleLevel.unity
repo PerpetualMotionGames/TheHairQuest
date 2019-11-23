@@ -581,9 +581,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Grid
       objectReference: {fileID: 0}
-<<<<<<< Updated upstream
-    - target: {fileID: 9114939867292623102, guid: 02cede6b8b9a5974cace6d3aa2aa2c8b,
-=======
     - target: {fileID: 9114939868275187506, guid: 02cede6b8b9a5974cace6d3aa2aa2c8b,
         type: 3}
       propertyPath: m_Tiles.Array.size
@@ -672,7 +669,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9114939868275187506, guid: 02cede6b8b9a5974cace6d3aa2aa2c8b,
->>>>>>> Stashed changes
         type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -687,13 +683,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-<<<<<<< Updated upstream
-    - target: {fileID: 9114939867292623102, guid: 02cede6b8b9a5974cace6d3aa2aa2c8b,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-=======
     - target: {fileID: 9114939868275187506, guid: 02cede6b8b9a5974cace6d3aa2aa2c8b,
         type: 3}
       propertyPath: m_TileMatrixArray.Array.data[0].m_Data.e33
@@ -6973,6 +6962,5 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
->>>>>>> Stashed changes
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02cede6b8b9a5974cace6d3aa2aa2c8b, type: 3}
