@@ -3,9 +3,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-    public float runSpeed;
-    public float jumpForce;
-    public float moveAcceleration;
+
     
     private GameObject leftFoot;
     private GameObject rightFoot;
@@ -17,7 +15,30 @@ public class PlayerController : MonoBehaviour {
     private bool canDoubleJump = true;
     private bool facingRight = true;
     private bool grounded = false;
- 
+
+    // gravity increases velocity of an object at 9.8 meters per second
+    // example, after 3 seconds of free fall, an object will be travelling at 9.8 * 3 meters per second
+    private static float GRAVITY = 9.8f;
+
+    // https://www.angio.net/personal/climb/speed
+    // terminal velocity is around 320kph, or lying flat, 195kph, therefore I'm setting this in the middle at 257.5
+    // 257.5kph converts to 71.527777777777800 mps
+    private static float TERMINAL_VELOCITY = 71.527777777777800f;
+
+    // https://en.wikipedia.org/wiki/Walking
+    // Average walking speed is 5.32kph, which converts to 1.4777777777777800 mps
+    private static float MAX_WALK_SPEED = 1.4777777777777800f;
+    private static float WALK_SPEED_ACCELERATION = MAX_WALK_SPEED * 2;
+
+    // https://www.iamlivingit.com/running/average-human-running-speed
+    // Average running speed is 13.62kph, which converts to 3.7833333333333300 mps
+    private static float MAX_RUN_SPEED = 3.7833333333333300f;
+    private static float RUN_SPEED_ACCELERATION = MAX_RUN_SPEED * 2;
+
+    private static float FLOOR_FRICTION = RUN_SPEED_ACCELERATION * 0.75f;
+    private static float JUMP_ACCELERATION = MAX_RUN_SPEED * 1.2f;
+
+
     // Start is called before the first frame update
     void Start() {
         leftFoot = GameObject.Find("LeftFoot");
@@ -30,7 +51,7 @@ public class PlayerController : MonoBehaviour {
     void Update() {
 
         // calculate animation effects
-        moveHorizontal = Input.GetAxisRaw("Horizontal") * runSpeed;
+        moveHorizontal = Input.GetAxisRaw("Horizontal") * MAX_RUN_SPEED;
 
         if(falling)
 		{ 
@@ -58,22 +79,39 @@ public class PlayerController : MonoBehaviour {
 
     // Fixed update is called just before calculating any physics
     private void FixedUpdate() {
+
+        float velocityX = rb2d.velocity.x;
+        float velocityY = rb2d.velocity.y;
         bool wasGrounded = grounded;
         grounded = Grounded();
-        Vector2 velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
 
-        if (!wasGrounded && grounded && velocity.y <= 0) OnLanded();
+        if (!wasGrounded && grounded && velocityY <= 0) OnLanded();
+        falling = velocityY < 0 && !grounded;
 
-        falling = velocity.y < 0 && !grounded;
-        velocity.x += moveHorizontal * moveAcceleration * Time.fixedDeltaTime;
-        if (velocity.x > runSpeed){
-            velocity.x = runSpeed;
-        } else if (velocity.x < -runSpeed){
-            velocity.x = -runSpeed;
+        // apply enviromental forces (gravity / friction)
+        if (velocityX < 0) {
+            velocityX += FLOOR_FRICTION * Time.fixedDeltaTime;
+        } else if (velocityX > 0) {
+            velocityX -= FLOOR_FRICTION * Time.fixedDeltaTime;
+        }
+
+        velocityY -= GRAVITY * Time.fixedDeltaTime;
+        if (velocityY < -TERMINAL_VELOCITY) {
+            velocityY = -TERMINAL_VELOCITY;
+        }
+
+
+        velocityX += moveHorizontal * RUN_SPEED_ACCELERATION * Time.fixedDeltaTime;
+        if (velocityX > MAX_RUN_SPEED) {
+            velocityX = MAX_RUN_SPEED;
+        } else if (velocityX < -MAX_RUN_SPEED) {
+            velocityX = -MAX_RUN_SPEED;
         }
         if (jump) {
-            velocity.y = jumpForce;
+            velocityY = JUMP_ACCELERATION;
         }
+
+        Vector2 velocity = new Vector2(velocityX, velocityY);
         rb2d.velocity = velocity;
         jump = false;
         

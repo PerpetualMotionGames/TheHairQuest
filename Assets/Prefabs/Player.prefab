@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4354876668035933477}
   - component: {fileID: 4354876668035933473}
   - component: {fileID: 4354876668035933472}
-  - component: {fileID: 4354876668035933474}
   - component: {fileID: 4354876668035933487}
+  - component: {fileID: 4347691630531585333}
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
@@ -125,8 +125,8 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &4354876668035933472
 MonoBehaviour:
@@ -142,43 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runSpeed: 5
   jumpForce: 4
-  animator: {fileID: 4354876668035933477}
-  rb2d: {fileID: 4354876668035933473}
-  scaleModifier: 1
   moveAcceleration: 3
-  leftFoot: {fileID: 4354876669132535574}
-  rightFoot: {fileID: 4354876669349647949}
---- !u!60 &4354876668035933474
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4354876668035933478}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.328125, y: 0.75}
-    newSize: {x: 0.328125, y: 0.75}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.12, y: 0.34}
-      - {x: -0.12, y: -0.26}
-      - {x: -0.1, y: -0.28}
-      - {x: 0.1, y: -0.28}
-      - {x: 0.12, y: -0.26}
-      - {x: 0.12, y: 0.34}
 --- !u!114 &4354876668035933487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +158,7 @@ MonoBehaviour:
   tileStates:
   - {fileID: 0}
   - {fileID: 0}
+  ladder: {fileID: 0}
   vol: {fileID: 0}
   swapTransitionTime: 0.5
   maxLensDistort: 30
@@ -201,6 +166,32 @@ MonoBehaviour:
   hueChange: 30
   frontAlph: 1
   backAlph: 0.2
+--- !u!61 &4347691630531585333
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4354876668035933478}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.03}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.328125, y: 0.75}
+    newSize: {x: 0.328125, y: 0.75}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.15, y: 0.5}
+  m_EdgeRadius: 0.15
 --- !u!1 &4354876669132535574
 GameObject:
   m_ObjectHideFlags: 0
