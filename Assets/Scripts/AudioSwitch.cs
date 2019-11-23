@@ -7,7 +7,6 @@ public class AudioSwitch : MonoBehaviour
 	public AudioSource soundtrackA;
 	public AudioSource soundtrackB;
 	TileSwitch tileswap;
-	public float vol;
 
 	private int audioState = 0;
     // Start is called before the first frame update
@@ -15,7 +14,7 @@ public class AudioSwitch : MonoBehaviour
     {
 		tileswap = GameObject.Find("Player").GetComponent<TileSwitch>();
 		soundtrackB.volume = 0;
-		soundtrackA.volume = vol;
+		soundtrackA.volume = 1;
     }
 
     // Update is called once per frame
@@ -39,11 +38,11 @@ public class AudioSwitch : MonoBehaviour
 
 		while(muted.volume > 0.05f)
 		{
-			playing.volume += vol*Time.deltaTime / transitionTime;
-			muted.volume -= vol*Time.deltaTime / transitionTime;
+			playing.volume += Time.deltaTime / transitionTime;
+			muted.volume -= Time.deltaTime / transitionTime;
 			yield return new WaitForEndOfFrame();
 		}
-		playing.volume = vol;
+		playing.volume = 1;
 		muted.volume = 0;
 	}
 }

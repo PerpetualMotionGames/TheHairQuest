@@ -10,8 +10,6 @@ public class TileSwitch : MonoBehaviour
 	public Tilemap[] tileStates; // for the two maps of the game world
 	private int activeTileSet = 0;
 
-	public Tile ladder;
-
 	public PostProcessVolume vol;
 	LensDistortion distortion;
 	ColorGrading hue;
@@ -59,8 +57,8 @@ public class TileSwitch : MonoBehaviour
 	{
 		tileStates[activeTileSet].gameObject.GetComponent<TilemapCollider2D>().enabled = true;
 		var forwardPos = tileStates[activeTileSet].transform.position;
-		tileStates[activeTileSet].gameObject.transform.position = new Vector3(forwardPos.x, forwardPos.y, 0);
-		tileStates[1-activeTileSet].gameObject.transform.position = new Vector3(forwardPos.x, forwardPos.y, 1);
+		tileStates[activeTileSet].gameObject.transform.position = new Vector3(forwardPos.x, forwardPos.y, -1);
+		tileStates[1-activeTileSet].gameObject.transform.position = new Vector3(forwardPos.x, forwardPos.y, 0);
 		tileStates[1-activeTileSet].gameObject.GetComponent<TilemapCollider2D>().enabled = false;
 	}
 
@@ -109,15 +107,15 @@ public class TileSwitch : MonoBehaviour
 		}
 		if(onladder)
 		{
-			gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);		
+			gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);
 			if (Input.GetKey(KeyCode.UpArrow))
 			{
 				transform.position += Vector3.up * Time.deltaTime * 3f;
 				gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 			}
+			
 		}
-
-	}
+    }
 	private void SetHue(float value, int setting) //setting tells us blue or red, value is by how much
 	{
 		//goes between 255 and 220
