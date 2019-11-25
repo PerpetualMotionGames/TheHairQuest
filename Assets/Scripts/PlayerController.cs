@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
     private bool canDoubleJump = true;
     private bool facingRight = true;
     private bool grounded = false;
+    private Vector2 previousVelocity;
 
     // gravity increases velocity of an object at 9.8 meters per second
     // example, after 3 seconds of free fall, an object will be travelling at 9.8 * 3 meters per second
@@ -80,41 +81,51 @@ public class PlayerController : MonoBehaviour {
     // Fixed update is called just before calculating any physics
     private void FixedUpdate() {
 
-        float velocityX = rb2d.velocity.x;
-        float velocityY = rb2d.velocity.y;
+        Vector2 velocity = rb2d.velocity;
         bool wasGrounded = grounded;
         grounded = Grounded();
 
-        if (!wasGrounded && grounded && velocityY <= 0) OnLanded();
-        falling = velocityY < 0 && !grounded;
+
+        if (!wasGrounded && grounded && previousVelocity != null && previousVelocity.y < 0) {
+            OnLanded(velocity.y >= 0 ? previousVelocity : velocity);
+        }
+        
+        falling = velocity.y < 0 && !grounded;
 
         // apply enviromental forces (gravity / friction)
-        if (velocityX < 0) {
-            velocityX += FLOOR_FRICTION * Time.fixedDeltaTime;
-        } else if (velocityX > 0) {
-            velocityX -= FLOOR_FRICTION * Time.fixedDeltaTime;
+        if (velocity.x < 0) {
+            velocity.x += FLOOR_FRICTION * Time.fixedDeltaTime;
+            // stops friction changing player from sliding left to right, instead they should stop
+            if (velocity.x > 0) {
+                velocity.x = 0;
+            }
+        } else if (velocity.x > 0) {
+            velocity.x -= FLOOR_FRICTION * Time.fixedDeltaTime;
+            // stops friction changing player from sliding left to right, instead they should stop
+            if (velocity.x < 0) {
+                velocity.x = 0;
+            }
         }
 
-        velocityY -= GRAVITY * Time.fixedDeltaTime;
-        if (velocityY < -TERMINAL_VELOCITY) {
-            velocityY = -TERMINAL_VELOCITY;
+        velocity.y -= GRAVITY * Time.fixedDeltaTime;
+        if (velocity.y < -TERMINAL_VELOCITY) {
+            velocity.y = -TERMINAL_VELOCITY;
         }
 
 
-        velocityX += moveHorizontal * RUN_SPEED_ACCELERATION * Time.fixedDeltaTime;
-        if (velocityX > MAX_RUN_SPEED) {
-            velocityX = MAX_RUN_SPEED;
-        } else if (velocityX < -MAX_RUN_SPEED) {
-            velocityX = -MAX_RUN_SPEED;
+        velocity.x += moveHorizontal * RUN_SPEED_ACCELERATION * Time.fixedDeltaTime;
+        if (velocity.x > MAX_RUN_SPEED) {
+            velocity.x = MAX_RUN_SPEED;
+        } else if (velocity.x < -MAX_RUN_SPEED) {
+            velocity.x = -MAX_RUN_SPEED;
         }
         if (jump) {
-            velocityY = JUMP_ACCELERATION;
+            velocity.y = JUMP_ACCELERATION;
+            AudioController.PlaySound("Jump");
         }
-
-        Vector2 velocity = new Vector2(velocityX, velocityY);
         rb2d.velocity = velocity;
+        previousVelocity = velocity;
         jump = false;
-        
     }
 
     //OnTriggerEnter2D is called whenever this object overlaps with a trigger collider.
@@ -126,7 +137,11 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void OnLanded(){
+    public void OnLanded(Vector2 velocity){
+        if (velocity.y <= -(TERMINAL_VELOCITY / 10)) {
+            AudioController.PlaySound("PlayerHit");
+        }
+        
         canDoubleJump = true;
         //animator.SetBool("DoubleJump", false);
         //animator.SetBool("IsJumping", false);

@@ -85,7 +85,7 @@ public class TileSwitch : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Return) && canSwap && LegalSwap())
 		{
 			SwitchTileState();
-			GameObject.Find("AudioController").GetComponent<AudioSwitch>().SwitchSound();
+			GameObject.Find("AudioController").GetComponent<AudioController>().SwitchSound();
 		}
 		if (Input.GetKeyDown(KeyCode.LeftShift))
 		{
@@ -104,7 +104,7 @@ public class TileSwitch : MonoBehaviour
 		bool onladder = false;
 		if (tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)) != null)
 		{
-			Debug.Log(tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)).name);
+			// Debug.Log(tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)).name);
 			onladder = tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(transform.position)).name == "jungleTilemap_28";
 		}
 		if(onladder)
@@ -116,7 +116,6 @@ public class TileSwitch : MonoBehaviour
 				gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 			}
 		}
-
 	}
 	private void SetHue(float value, int setting) //setting tells us blue or red, value is by how much
 	{
