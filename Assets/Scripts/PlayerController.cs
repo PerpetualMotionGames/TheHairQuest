@@ -138,9 +138,10 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void OnLanded(Vector2 velocity){
-        Debug.Log("Detecting a landing with a velocity of " + previousVelocity.y);
-        if (velocity.y <= -(TERMINAL_VELOCITY/10))
-        AudioController.PlaySound("PlayerHit");
+        if (velocity.y <= -(TERMINAL_VELOCITY / 10)) {
+            AudioController.PlaySound("PlayerHit");
+        }
+        
         canDoubleJump = true;
         //animator.SetBool("DoubleJump", false);
         //animator.SetBool("IsJumping", false);
@@ -160,13 +161,13 @@ public class PlayerController : MonoBehaviour {
     public bool Grounded() {
         // check left foot
         Vector3 bottomPosition = leftFoot.transform.position;
-         Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
+        // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
         if (hit.collider) return true;
 
         // check right foot
         bottomPosition = rightFoot.transform.position;
-         Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
+        // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
         return hit.collider != null;
     }

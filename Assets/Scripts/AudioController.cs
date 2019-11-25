@@ -16,15 +16,6 @@ public class AudioController : MonoBehaviour
     void Start() {
         tileswap = GameObject.Find("Player").GetComponent<TileSwitch>();
 
-        boxCollision = GameObject.Find("BoxCollision").GetComponent<AudioSource>();
-        gameOver = GameObject.Find("GameOver").GetComponent<AudioSource>();
-        jump = GameObject.Find("Jump").GetComponent<AudioSource>();
-        lava = GameObject.Find("Lava").GetComponent<AudioSource>();
-        playerHit = GameObject.Find("PlayerHit").GetComponent<AudioSource>();
-        pushBox = GameObject.Find("PushBox").GetComponent<AudioSource>();
-        splash = GameObject.Find("Splash").GetComponent<AudioSource>();
-        water = GameObject.Find("Water").GetComponent<AudioSource>();
-
         soundtrackB.volume = 0;
         soundtrackA.volume = vol;
     }
@@ -55,31 +46,25 @@ public class AudioController : MonoBehaviour
     }
 
     public static void PlaySound(string clip) {
-        switch (clip) {
-            case "BoxCollision":
-                boxCollision.Play();
-                break;
-            case "GameOver":
-                gameOver.Play();
-                break;
-            case "Jump":
-                jump.Play();
-                break;
-            case "Lava":
-                lava.Play();
-                break;
-            case "PlayerHit":
-                playerHit.Play();
-                break;
-            case "PushBox":
-                pushBox.Play();
-                break;
-            case "Splash":
-                splash.Play();
-                break;
-            case "Water":
-                water.Play();
-                break;
+        AudioSource audioSource = GameObject.Find(clip).GetComponent<AudioSource>();
+        if (audioSource == null) {
+            Debug.Log("AudioController.PlaySound could not find a clip named: " + clip);
+            return;
+        }
+        audioSource.Play();
+    }
+
+    public static void ChangeVolume(string clip, float volume) {
+        AudioSource audioSource = GameObject.Find(clip).GetComponent<AudioSource>();
+        if (audioSource == null) {
+            Debug.Log("AudioController.ChangeVolume could not find a clip named: " + clip);
+            return;
+        }
+        audioSource.volume = volume;
+        if (volume > 0 && !audioSource.isPlaying) {
+            audioSource.Play();
+        } else if (volume == 0 && audioSource.isPlaying) {
+            audioSource.Stop();
         }
     }
 

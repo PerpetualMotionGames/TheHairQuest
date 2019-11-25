@@ -116,7 +116,6 @@ public class TileSwitch : MonoBehaviour
 				gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 			}
 		}
-
 	}
 	private void SetHue(float value, int setting) //setting tells us blue or red, value is by how much
 	{
