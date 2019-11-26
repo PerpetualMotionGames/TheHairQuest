@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool facingRight = true;
     private bool grounded = false;
     private Vector2 previousVelocity;
+	public bool paused;
 
     // gravity increases velocity of an object at 9.8 meters per second
     // example, after 3 seconds of free fall, an object will be travelling at 9.8 * 3 meters per second

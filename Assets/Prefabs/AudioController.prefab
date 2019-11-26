@@ -264,6 +264,7 @@ GameObject:
   m_Component:
   - component: {fileID: 335369042078977661}
   - component: {fileID: 8574597279727547348}
+  - component: {fileID: 3628345340393258448}
   m_Layer: 0
   m_Name: AudioController
   m_TagString: Untagged
@@ -309,7 +310,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundtrackA: {fileID: 335369040325829892}
   soundtrackB: {fileID: 335369040995659874}
-  vol: 1
+--- !u!114 &3628345340393258448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335369042078977663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf6bcf4801b3664694b1fdd3a8d828d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileset1: {fileID: 0}
+  tileset2: {fileID: 0}
+  water: {fileID: 1573638452382852821}
+  lava: {fileID: 1890154648831300165}
 --- !u!1 &2764315218568753078
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,7 +1130,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2c6be5fdc8780cf49a40ae56d55d7877, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -1241,7 +1257,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 180bc2ea694a13943a0d1b9735a7771f, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
   Loop: 1

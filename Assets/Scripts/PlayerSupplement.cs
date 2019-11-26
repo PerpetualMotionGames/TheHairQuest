@@ -7,22 +7,33 @@ using UnityEngine;
 
 public class PlayerSupplement : MonoBehaviour
 {
-	SceneLoader sceneLoader;
+	public SceneLoader sceneLoader;
 	float lowerbound;
 	float respawnHeight = 10f;
 	GameObject player;
+	PlayerController playercontrol;
     // Start is called before the first frame update
     void Start()
     {
-		GameObject SceneController = new GameObject("SceneController");
-		sceneLoader = SceneController.AddComponent<SceneLoader>();
 		var bounds = GameObject.Find("CameraBounds");
 		lowerbound = bounds.transform.position.y - bounds.transform.localScale.y/2;
 		player = GameObject.Find("Player");
+		playercontrol = player.GetComponent<PlayerController>();
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			if (!playercontrol.paused)
+			{
+				sceneLoader.Pause();
+			}
+			
+		}
+	}
+	// Update is called once per frame
+	void FixedUpdate()
     {
 		CheckBounds();
     }
