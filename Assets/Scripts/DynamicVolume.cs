@@ -20,9 +20,6 @@ public class DynamicVolume : MonoBehaviour
 	GameObject player;
 	TileSwitch tileSwitch;
 
-	public AudioSource water;
-	public AudioSource lava;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -70,13 +67,13 @@ public class DynamicVolume : MonoBehaviour
 		var closest = tileSwitch.activeTileSet == 0 ? DistanceToNearest(waterTiles) : DistanceToNearest(lavaTiles);
 		if (tileSwitch.activeTileSet == 0)
 		{
-			water.volume = Mathf.Clamp(1f/closest,0,1)*soundVolume;
-			lava.volume = 0f;
+            AudioController.ChangeVolume("Water", Mathf.Clamp(1f/closest,0,1)*soundVolume);
+            AudioController.ChangeVolume("Lava", 0f);
 		}
 		else
 		{
-			lava.volume = Mathf.Clamp(1f / closest, 0, 1)*soundVolume;
-			water.volume = 0f;
+            AudioController.ChangeVolume("Lava", Mathf.Clamp(1f / closest, 0, 1)*soundVolume);
+            AudioController.ChangeVolume("Water", 0f);
 		}
     }
 

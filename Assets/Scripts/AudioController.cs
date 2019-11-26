@@ -7,7 +7,6 @@ using UnityEngine.Audio;
 public class AudioController : MonoBehaviour
 {
     public AudioSource soundtrackA, soundtrackB;
-    private static AudioSource boxCollision, gameOver, jump, lava, playerHit, pushBox, splash, water;
     TileSwitch tileswap;
 	private static float musicvol;
 	private static float soundvol;
@@ -21,6 +20,9 @@ public class AudioController : MonoBehaviour
 
         soundtrackB.volume = 0;
         soundtrackA.volume = musicvol;
+        soundtrackA.Play();
+        soundtrackB.Play();
+
     }
 
     // Update is called once per frame
