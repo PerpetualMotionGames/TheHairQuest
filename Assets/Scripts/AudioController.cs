@@ -9,15 +9,18 @@ public class AudioController : MonoBehaviour
     public AudioSource soundtrackA, soundtrackB;
     private static AudioSource boxCollision, gameOver, jump, lava, playerHit, pushBox, splash, water;
     TileSwitch tileswap;
-    public float vol;
+	private static float musicvol;
+	private static float soundvol;
 
     private int audioState = 0;
     // Start is called before the first frame update
     void Start() {
+		musicvol = PlayerPrefs.GetFloat("MusicVolume", 1);
+		soundvol = PlayerPrefs.GetFloat("SoundVolume",1);
         tileswap = GameObject.Find("Player").GetComponent<TileSwitch>();
 
         soundtrackB.volume = 0;
-        soundtrackA.volume = vol;
+        soundtrackA.volume = musicvol;
     }
 
     // Update is called once per frame
@@ -37,16 +40,17 @@ public class AudioController : MonoBehaviour
         AudioSource muted = audioState == 0 ? soundtrackB : soundtrackA;
 
         while (muted.volume > 0.05f) {
-            playing.volume += vol * Time.deltaTime / transitionTime;
-            muted.volume -= vol * Time.deltaTime / transitionTime;
+            playing.volume += musicvol * Time.deltaTime / transitionTime;
+            muted.volume -= musicvol * Time.deltaTime / transitionTime;
             yield return new WaitForEndOfFrame();
         }
-        playing.volume = vol;
+        playing.volume = musicvol;
         muted.volume = 0;
     }
 
     public static void PlaySound(string clip) {
         AudioSource audioSource = GameObject.Find(clip).GetComponent<AudioSource>();
+		audioSource.volume = soundvol;
         if (audioSource == null) {
             Debug.Log("AudioController.PlaySound could not find a clip named: " + clip);
             return;

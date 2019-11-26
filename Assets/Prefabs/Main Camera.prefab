@@ -98,12 +98,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41e815f95d1fae44681107481f6dcbda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToFollow: {fileID: 0}
   offsetLeft: 1
   offsetDown: 0
   lockX: 0
   lockY: 0
-  boundingBox: {fileID: 0}
 --- !u!114 &7472409747523378787
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -48,12 +48,12 @@ public class LevelSelect : MonoBehaviour
 
 	private void UpdateButtons()
 	{
-		int tutorialIndex = 2;
+		int tutorialIndex = 3;
 		Debug.Log(tutorialIndex);
-		for(int i = 1; i < numLevels; i++)
+		for(int i = 0; i < numLevels; i++)
 		{
 			int buttonIndex = i;
-			if (doneLevel[buttonIndex-1])
+			if (i==0 || doneLevel[buttonIndex-1])
 			{
 				levels[buttonIndex].enabled = true;
 				levels[buttonIndex].onClick.AddListener(() => LoadLevel(tutorialIndex+buttonIndex));

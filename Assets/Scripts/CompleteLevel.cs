@@ -18,7 +18,8 @@ public class CompleteLevel : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		SceneLoader controller = GameObject.Find("SceneController").GetComponent<SceneLoader>();
+		PlayerSupplement playcontroller = GameObject.Find("Player").GetComponent<PlayerSupplement>();
+		SceneLoader controller = playcontroller.sceneLoader;
 		if (collision.gameObject.tag == "Player")
 		{
 			controller.SetSceneComplete();

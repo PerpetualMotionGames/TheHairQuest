@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class TileSwitch : MonoBehaviour
 {
 	public Tilemap[] tileStates; // for the two maps of the game world
-	private int activeTileSet = 0;
+	public int activeTileSet = 0;
 
 	public Tile ladder;
 
@@ -29,6 +29,7 @@ public class TileSwitch : MonoBehaviour
 
     void Start()
     {
+		activeTileSet = 0;
 		col = new ColorParameter();
 		UpdateTileCollider();
 		SetAlpha(frontAlph, backAlph);
