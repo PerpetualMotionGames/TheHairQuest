@@ -56,25 +56,26 @@ public class PlayerController : MonoBehaviour {
 
         if(falling)
 		{ 
-			//animator.SetBool("IsJumping", false);
-		}
+			animator.SetBool("IsJumping", false);
+            animator.SetBool("DoubleJump", false);
+        }
 
         if (Input.GetButtonDown("Jump")) {
             if (!grounded) {
                 if (canDoubleJump){
                     jump = true;
                     canDoubleJump = false;
-                    //animator.SetBool("DoubleJump", true);
-                    //animator.SetBool("IsJumping", true);
+                    animator.SetBool("DoubleJump", true);
+                    animator.SetBool("IsJumping", true);
                 }
             } else {
                 jump = true;
-                //animator.SetBool("IsJumping", true);
+                animator.SetBool("IsJumping", true);
             }
         }
 
-        //animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
-        //animator.SetBool("IsFalling", falling);
+        animator.SetFloat("Speed", Mathf.Abs(rb2d.velocity.x));
+        animator.SetBool("IsFalling", falling);
         OrientPlayer();
     }
 
@@ -143,9 +144,9 @@ public class PlayerController : MonoBehaviour {
         }
         
         canDoubleJump = true;
-        //animator.SetBool("DoubleJump", false);
-        //animator.SetBool("IsJumping", false);
-        //animator.SetBool("IsFalling", false);
+        animator.SetBool("DoubleJump", false);
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsFalling", false);
     }
 
     private void OrientPlayer()
