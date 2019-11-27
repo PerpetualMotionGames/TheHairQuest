@@ -47,10 +47,17 @@ public class TileSwitch : MonoBehaviour
 	public void SetAlpha(float foregroundAlpha, float backGroundAlpha)  //set the alpha value of the active tileset and the inactive one.
 	{
 		TileAlpha(tileStates[activeTileSet], foregroundAlpha);
-		TileAlpha(tileStates[1-activeTileSet], backGroundAlpha);
-	}
+        foreach (Tilemap tm in tileStates[activeTileSet].transform) {
+            TileAlpha(tm, foregroundAlpha);
+        }
 
-	public void SwitchTileState()
+		TileAlpha(tileStates[1-activeTileSet], backGroundAlpha);
+        foreach (Tilemap tm in tileStates[1-activeTileSet].transform) {
+            TileAlpha(tm, backGroundAlpha);
+        }
+    }
+
+    public void SwitchTileState()
 	{
 		activeTileSet = 1 - activeTileSet; 
 		StartCoroutine(SwapEffect());
