@@ -45,9 +45,9 @@ public class TileSwitch : MonoBehaviour
         map.color = mapCol;
     }
     // trying overloaded method for changing alpha of sprites
-    public void TileAlpha(GameObject tile, float alpha) //for a specific tilemap set the alpha of the colour
+    public void TileAlpha(GameObject obj, float alpha) //for a specific tilemap set the alpha of the colour
     {
-        SpriteRenderer sr = tile.GetComponent<SpriteRenderer>();
+        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
         Color mapCol = sr.color;
         mapCol.a = alpha;
         sr.color = mapCol;
@@ -56,15 +56,21 @@ public class TileSwitch : MonoBehaviour
 	{
 		TileAlpha(tileStates[activeTileSet], foregroundAlpha);
         TileAlpha(tileStates[1 - activeTileSet], backGroundAlpha);
-        /*
-        foreach (GameObject go in tileStates[activeTileSet].transform) {
-            TileAlpha(go, foregroundAlpha);
+        
+        foreach (Transform t in tileStates[activeTileSet].transform) {
+            TileAlpha(t.gameObject, foregroundAlpha);
+            if (t.gameObject.CompareTag("Projectile")) {
+                t.GetComponent<BoxCollider2D>().enabled = true;
+            }
         }
 
-        foreach (GameObject go in tileStates[1-activeTileSet].transform) {
-            TileAlpha(go, backGroundAlpha);
+        foreach (Transform t in tileStates[1-activeTileSet].transform) {
+            TileAlpha(t.gameObject, backGroundAlpha);
+            if (t.gameObject.CompareTag("Projectile")) {
+                t.GetComponent<BoxCollider2D>().enabled = false;
+            }
         }
-        */
+
     }
 
     public void SwitchTileState()

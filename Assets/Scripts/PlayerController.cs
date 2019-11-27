@@ -97,9 +97,7 @@ public class PlayerController : MonoBehaviour {
 
         // apply enviromental forces (gravity / friction / hits)
         velocity.x += hitVelocity.x;
-        if (hitVelocity.x != 0) {
-            Debug.Log("taking hit of " + hitVelocity.x);
-        }
+
         if (velocity.x < 0) {
             velocity.x += FLOOR_FRICTION * Time.fixedDeltaTime;
             // stops friction changing player from sliding left to right, instead they should stop
