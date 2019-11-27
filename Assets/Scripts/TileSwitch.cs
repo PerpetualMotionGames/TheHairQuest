@@ -38,23 +38,33 @@ public class TileSwitch : MonoBehaviour
 		SetHue(255 - hueChange, 0);
 	}
 
-	public void TileAlpha(Tilemap map, float alpha) //for a specific tilemap set the alpha of the colour
-	{
-		Color mapCol = map.color;
-		mapCol.a = alpha;
-		map.color = mapCol;
-	}
-	public void SetAlpha(float foregroundAlpha, float backGroundAlpha)  //set the alpha value of the active tileset and the inactive one.
+    public void TileAlpha(Tilemap map, float alpha) //for a specific tilemap set the alpha of the colour
+    {
+        Color mapCol = map.color;
+        mapCol.a = alpha;
+        map.color = mapCol;
+    }
+    // trying overloaded method for changing alpha of sprites
+    public void TileAlpha(GameObject tile, float alpha) //for a specific tilemap set the alpha of the colour
+    {
+        SpriteRenderer sr = tile.GetComponent<SpriteRenderer>();
+        Color mapCol = sr.color;
+        mapCol.a = alpha;
+        sr.color = mapCol;
+    }
+    public void SetAlpha(float foregroundAlpha, float backGroundAlpha)  //set the alpha value of the active tileset and the inactive one.
 	{
 		TileAlpha(tileStates[activeTileSet], foregroundAlpha);
-        foreach (Tilemap tm in tileStates[activeTileSet].transform) {
-            TileAlpha(tm, foregroundAlpha);
+        TileAlpha(tileStates[1 - activeTileSet], backGroundAlpha);
+        /*
+        foreach (GameObject go in tileStates[activeTileSet].transform) {
+            TileAlpha(go, foregroundAlpha);
         }
 
-		TileAlpha(tileStates[1-activeTileSet], backGroundAlpha);
-        foreach (Tilemap tm in tileStates[1-activeTileSet].transform) {
-            TileAlpha(tm, backGroundAlpha);
+        foreach (GameObject go in tileStates[1-activeTileSet].transform) {
+            TileAlpha(go, backGroundAlpha);
         }
+        */
     }
 
     public void SwitchTileState()
