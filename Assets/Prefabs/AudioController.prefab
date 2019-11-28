@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 335369042078977661}
   - component: {fileID: 8574597279727547348}
-  - component: {fileID: 3628345340393258448}
   m_Layer: 0
   m_Name: AudioController
-  m_TagString: Untagged
+  m_TagString: audio
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -54,22 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfb205acdee34a47ac08e648ff38ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundtrackA: {fileID: 0}
-  soundtrackB: {fileID: 0}
---- !u!114 &3628345340393258448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 335369042078977663}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccf6bcf4801b3664694b1fdd3a8d828d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileset1: {fileID: 0}
-  tileset2: {fileID: 0}
+  soundtrackA: {fileID: 6973010525828804668}
+  soundtrackB: {fileID: 3408330625308691549}
 --- !u!1 &1619214862332880827
 GameObject:
   m_ObjectHideFlags: 0

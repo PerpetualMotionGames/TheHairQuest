@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool facingRight = true;
     private bool grounded = false;
     private Vector2 previousVelocity;
+    private Vector2 hitVelocity;
 	public bool paused;
 
     // gravity increases velocity of an object at 9.8 meters per second
@@ -94,7 +95,9 @@ public class PlayerController : MonoBehaviour {
         
         falling = velocity.y < 0 && !grounded;
 
-        // apply enviromental forces (gravity / friction)
+        // apply enviromental forces (gravity / friction / hits)
+        velocity.x += hitVelocity.x;
+
         if (velocity.x < 0) {
             velocity.x += FLOOR_FRICTION * Time.fixedDeltaTime;
             // stops friction changing player from sliding left to right, instead they should stop
@@ -127,15 +130,18 @@ public class PlayerController : MonoBehaviour {
         }
         rb2d.velocity = velocity;
         previousVelocity = velocity;
+        hitVelocity.x = 0;
         jump = false;
     }
 
     //OnTriggerEnter2D is called whenever this object overlaps with a trigger collider.
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D obj)
     {
         //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
-        if (other.gameObject.CompareTag("Pickup")) {
-            other.gameObject.SetActive(false);
+        if (obj.gameObject.CompareTag("Projectile")) {
+            hitVelocity = obj.GetComponent<Rigidbody2D>().velocity;
+            obj.gameObject.SetActive(false);
+            AudioController.PlaySound("PlayerHit");
         }
     }
 
