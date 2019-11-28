@@ -12,12 +12,16 @@ public class PlayerSupplement : MonoBehaviour
 	float respawnHeight = 10f;
 	GameObject player;
 	PlayerController playercontrol;
+    TileSwitch tileSwitch;
     // Start is called before the first frame update
+
+
     void Start()
     {
 		var bounds = GameObject.Find("CameraBounds");
 		lowerbound = bounds.transform.position.y - bounds.transform.localScale.y/2;
 		player = GameObject.Find("Player");
+        tileSwitch = player.GetComponent<TileSwitch>();
 		playercontrol = player.GetComponent<PlayerController>();
     }
 
@@ -36,6 +40,7 @@ public class PlayerSupplement : MonoBehaviour
 	void FixedUpdate()
     {
 		CheckBounds();
+        tileSwitch.CheckPosition();
     }
 
 	void CheckBounds()

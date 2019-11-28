@@ -56,6 +56,15 @@ public class AudioController : MonoBehaviour
 
     }
 
+    public void SetVolume()
+    {
+        musicvol = PlayerPrefs.GetFloat("MusicVolume", 1);
+        soundvol = PlayerPrefs.GetFloat("SoundVolume", 1);
+
+        soundtrackB.volume = 0;
+        soundtrackA.volume = musicvol;
+    }
+
     void onSceneChange(Scene scene, LoadSceneMode mode)
     {
         if (SceneLoader.inGame())

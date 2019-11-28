@@ -10,7 +10,9 @@ public class TileSwitch : MonoBehaviour
 	public int activeTileSet = 0;
 
 	public Tile ladder;
+    private bool dying = false;
 
+    GameObject player;
 	public PostProcessVolume vol;
 	LensDistortion distortion;
 	ColorGrading hue;
@@ -26,8 +28,11 @@ public class TileSwitch : MonoBehaviour
 	public float frontAlph = 1;
 	public float backAlph = 0.2f;
 
+    public string[] badTileNames = { "jungleTilemap_9", "jungleTilemap_19", "jungleTilemap_8", "jungleTilemap_18" }; //all the tiles that will kill us
+
     void Start()
     {
+        player = GameObject.Find("Player");
 		activeTileSet = 0;
 		col = new ColorParameter();
 		UpdateTileCollider();
@@ -212,4 +217,16 @@ public class TileSwitch : MonoBehaviour
 		}
 		canSwap = true;
 	}
+
+    public void CheckPosition()
+    {
+        //if you shift whilst on top of a tile die - need to do this for water and lava too
+        TileBase hitTile = tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(player.transform.position));
+        if (hitTile != null && !dying && hitTile.name!="jungleTilemap_28")
+        {
+            dying = true;
+            KillObject kill = player.AddComponent<KillObject>();
+            kill.PlayerKill();
+        }
+    }
 }
