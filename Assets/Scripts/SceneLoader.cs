@@ -12,6 +12,13 @@ public class SceneLoader : MonoBehaviour
 	private PostProcessVolume vol;
 	private GameObject inGameUI;
 
+    public static int firstLevelIndex = 3;
+
+    public static bool inGame()
+    {
+        return CurrentScene() >= firstLevelIndex;
+    }
+
 	private void Start()
 	{ 
 		Time.timeScale = 1;
@@ -77,4 +84,9 @@ public class SceneLoader : MonoBehaviour
 		yield return new WaitForSeconds(0.2f);
 		Time.timeScale = 0;
 	}
+
+    public static int CurrentScene()
+    {
+        return SceneManager.GetActiveScene().buildIndex;
+    }
 }
