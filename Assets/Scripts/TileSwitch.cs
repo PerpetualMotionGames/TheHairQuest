@@ -73,6 +73,11 @@ public class TileSwitch : MonoBehaviour
 
     }
 
+    public void SpawnAlpha()
+    {
+        SetAlpha(frontAlph, backAlph);
+    }
+
     public void SwitchTileState()
 	{
 		activeTileSet = 1 - activeTileSet; 
