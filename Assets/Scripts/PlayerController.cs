@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour {
 
 
         if ((leftFootTile != null && (leftFootTile.name == "jungleTilemap_9" || leftFootTile.name == "jungleTilemap_19" || leftFootTile.name == "jungleTilemap_8" || leftFootTile.name == "jungleTilemap_18")) ||
-            (rightFootTile != null && (rightFootTile.name == "jungleTilemap_9" || rightFootTile.name == "jungleTilemap_19" || leftFootTile.name == "jungleTilemap_8" || leftFootTile.name == "jungleTilemap_18"))) {
+            (rightFootTile != null && (rightFootTile.name == "jungleTilemap_9" || rightFootTile.name == "jungleTilemap_19" || rightFootTile.name == "jungleTilemap_8" || rightFootTile.name == "jungleTilemap_18"))) {
             if (!inWater) {
                 velocity.x /= 2;
                 velocity.y /= 3;
