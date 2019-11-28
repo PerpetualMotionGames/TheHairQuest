@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 
 
 public class AudioController : MonoBehaviour
@@ -41,17 +42,34 @@ public class AudioController : MonoBehaviour
 
         if (SceneLoader.inGame())
         {
-            tileSwitch = GameObject.Find("Player").GetComponent<TileSwitch>();
             InitDynamicVolume();
         }
 
+        GameObject[] multiAudio = GameObject.FindGameObjectsWithTag("audio");
+        if (multiAudio.Length > 1)
+        {
+            Destroy(multiAudio[1]);
+        }
+        DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += onSceneChange;
+
+    }
+
+    void onSceneChange(Scene scene, LoadSceneMode mode)
+    {
+        if (SceneLoader.inGame())
+        {
+            InitDynamicVolume();
+        }
     }
 
     void InitDynamicVolume()
     {
+        tileSwitch = GameObject.Find("Player").GetComponent<TileSwitch>();
         bounds = GameObject.Find("CameraBounds");
         player = GameObject.Find("Player");
-        tileset1 = GameObject.Find("Tiles1").GetComponent<Tilemap>();
+        tileset1 = GameObject.Find("Tiles").GetComponent<Tilemap>();
         tileset2 = GameObject.Find("Tiles2").GetComponent<Tilemap>();
         tileSwitch = player.GetComponent<TileSwitch>();
         vecMin = bounds.transform.position - bounds.transform.localScale / 2;
