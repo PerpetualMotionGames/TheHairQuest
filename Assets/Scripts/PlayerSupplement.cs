@@ -48,6 +48,6 @@ public class PlayerSupplement : MonoBehaviour
 	
 	void Respawn()
 	{
-		sceneLoader.ReloadCurrentScene();
+		SceneLoader.ReloadCurrentScene();
 	}
 }

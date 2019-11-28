@@ -36,9 +36,9 @@ public class SceneLoader : MonoBehaviour
 		SceneManager.LoadScene(index);
 	}
 
-	public void ReloadCurrentScene()
+	public static void ReloadCurrentScene()
 	{
-		SceneManager.LoadScene(thisIndex);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
 	public void LoadNextLevel()
@@ -57,7 +57,7 @@ public class SceneLoader : MonoBehaviour
 
 	public void SetSceneComplete()
 	{
-		var level = thisIndex - 1; //because menu and level select are in play
+		var level = thisIndex - firstLevelIndex + 1; //because menu and level select are in play
 		PlayerPrefs.SetInt("level" + level, 1);
 	}
 

@@ -13,7 +13,7 @@ public class LevelSelect : MonoBehaviour
     {
 		numLevels = levels.Length;
 		doneLevel = new bool[numLevels];
-		PlayerPrefs.SetInt("level1", 1);
+		//PlayerPrefs.SetInt("level1", 1);
 		GetLevels();
 		UpdateButtons();
     }

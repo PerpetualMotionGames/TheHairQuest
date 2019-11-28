@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.SceneManagement;
 public class TileSwitch : MonoBehaviour
 {
 	public Tilemap[] tileStates; // for the two maps of the game world
@@ -36,8 +35,18 @@ public class TileSwitch : MonoBehaviour
 		vol.profile.TryGetSettings(out distortion);
 		vol.profile.TryGetSettings(out hue);
 		SetHue(255 - hueChange, 0);
+        ResetColliders();
 	}
 
+    public void ResetColliders()
+    {
+        //for some reason upon launching a new scene unity is still using the tilemap collider of the old level whilst showing us the new one
+        //to mitigate this I'm just adding a random function that disables and renables the collider of tiles1 to stop this weird bug
+        TilemapCollider2D tiles1 = GameObject.Find("Tiles").GetComponent<TilemapCollider2D>();
+        tiles1.enabled = false;
+        tiles1.enabled = true;
+
+    }
     public void TileAlpha(Tilemap map, float alpha) //for a specific tilemap set the alpha of the colour
     {
         Color mapCol = map.color;
@@ -71,6 +80,27 @@ public class TileSwitch : MonoBehaviour
             }
         }
 
+    }
+
+    public void SetAlphaChildren()
+    {
+        foreach (Transform t in tileStates[activeTileSet].transform)
+        {
+            TileAlpha(t.gameObject,Input.GetKey(KeyCode.LeftShift)? backAlph:frontAlph);
+            if (t.gameObject.CompareTag("Projectile"))
+            {
+                t.GetComponent<BoxCollider2D>().enabled = true;
+            }
+        }
+
+        foreach (Transform t in tileStates[1 - activeTileSet].transform)
+        {
+            TileAlpha(t.gameObject,Input.GetKey(KeyCode.LeftShift) ? frontAlph:backAlph);
+            if (t.gameObject.CompareTag("Projectile"))
+            {
+                t.GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
     }
 
     public void SpawnAlpha()
@@ -127,7 +157,7 @@ public class TileSwitch : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			SceneLoader.ReloadCurrentScene();
 		}
 		//touching ladder
 		bool onladder = false;

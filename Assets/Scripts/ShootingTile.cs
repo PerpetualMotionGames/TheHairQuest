@@ -24,7 +24,7 @@ public class ShootingTile : MonoBehaviour
     private IEnumerator Shoot(float delay) {
         yield return new WaitForSeconds(delay);
         var item = (GameObject)Instantiate(projectile, transform.position, transform.rotation, transform.parent.transform);
-        tileSwitch.SpawnAlpha();
+        tileSwitch.SetAlphaChildren();
         Destroy(item, destroyTime);
         StartCoroutine(Shoot(delay));
     }
