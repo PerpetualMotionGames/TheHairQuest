@@ -146,7 +146,7 @@ public class AudioController : MonoBehaviour
         float minDist = -1;
         foreach (var tile in tiles)
         {
-            var distance = Vector3.Distance(player.transform.position, tile);
+            var distance = Mathf.Max(Vector3.Distance(player.transform.position, tile)-0.5f,0);
             if (minDist == -1 || distance < minDist)
             {
                 minDist = distance;
