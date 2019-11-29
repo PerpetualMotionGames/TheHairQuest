@@ -48,8 +48,11 @@ public class TileSwitch : MonoBehaviour
         //for some reason upon launching a new scene unity is still using the tilemap collider of the old level whilst showing us the new one
         //to mitigate this I'm just adding a random function that disables and renables the collider of tiles1 to stop this weird bug
         TilemapCollider2D tiles1 = GameObject.Find("Tiles").GetComponent<TilemapCollider2D>();
+		TilemapCollider2D tiles2 = GameObject.Find("Tiles2").GetComponent<TilemapCollider2D>();
         tiles1.enabled = false;
         tiles1.enabled = true;
+		tiles2.enabled = true;
+		tiles2.enabled = false;
 
     }
     public void TileAlpha(Tilemap map, float alpha) //for a specific tilemap set the alpha of the colour
