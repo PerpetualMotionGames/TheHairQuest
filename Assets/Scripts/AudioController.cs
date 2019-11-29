@@ -75,6 +75,7 @@ public class AudioController : MonoBehaviour
 
     void InitDynamicVolume()
     {
+
         tileSwitch = GameObject.Find("Player").GetComponent<TileSwitch>();
         bounds = GameObject.Find("CameraBounds");
         player = GameObject.Find("Player");
@@ -84,7 +85,11 @@ public class AudioController : MonoBehaviour
         vecMin = bounds.transform.position - bounds.transform.localScale / 2;
         vecMax = vecMin + bounds.transform.localScale;
         FindTilePositions();
-    }
+		if (soundtrackA.volume < musicvol)
+		{
+			SwitchSound();
+		}
+	}
 
     void FindTilePositions()
     {
