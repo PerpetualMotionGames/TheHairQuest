@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        animator.SetFloat("Speed", Mathf.Abs(rb2d.velocity.x));
+        animator.SetBool("IsWalking", Mathf.Abs(rb2d.velocity.x) > 0.001);
         animator.SetBool("IsFalling", falling);
         OrientPlayer();
     }
@@ -93,8 +93,6 @@ public class PlayerController : MonoBehaviour {
             OnLanded(velocity.y >= 0 ? previousVelocity : velocity);
         }
         
-        falling = velocity.y < 0 && !grounded;
-
         // apply enviromental forces (gravity / friction / hits)
         velocity.x += hitVelocity.x;
 
@@ -132,6 +130,8 @@ public class PlayerController : MonoBehaviour {
         previousVelocity = velocity;
         hitVelocity.x = 0;
         jump = false;
+        falling = velocity.y < 0 && !grounded;
+
     }
 
     //OnTriggerEnter2D is called whenever this object overlaps with a trigger collider.
