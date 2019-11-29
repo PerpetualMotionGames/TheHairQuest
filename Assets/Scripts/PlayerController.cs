@@ -203,7 +203,6 @@ public class PlayerController : MonoBehaviour {
         // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
         if (hit.collider) {
-            Debug.Log(hit);
             return true;
         }
 
