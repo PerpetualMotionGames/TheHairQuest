@@ -29,8 +29,17 @@ public class AudioController : MonoBehaviour
     GameObject player;
     TileSwitch tileSwitch;
 
-    // Start is called before the first frame update
-    void Start()
+	// Start is called before the first frame update
+	private void Awake()
+	{
+		GameObject[] multiAudio = GameObject.FindGameObjectsWithTag("audio");
+		if (multiAudio.Length > 1)
+		{
+			Destroy(gameObject);
+		}
+		
+	}
+	void Start()
     {
 		musicvol = PlayerPrefs.GetFloat("MusicVolume", 1);
 		soundvol = PlayerPrefs.GetFloat("SoundVolume",1);
@@ -44,15 +53,8 @@ public class AudioController : MonoBehaviour
         {
             InitDynamicVolume();
         }
-
-        GameObject[] multiAudio = GameObject.FindGameObjectsWithTag("audio");
-        if (multiAudio.Length > 1)
-        {
-            Destroy(multiAudio[1]);
-        }
-        DontDestroyOnLoad(gameObject);
-
-        SceneManager.sceneLoaded += onSceneChange;
+		DontDestroyOnLoad(gameObject);
+		SceneManager.sceneLoaded += onSceneChange;
 
     }
 
@@ -69,7 +71,7 @@ public class AudioController : MonoBehaviour
     {
         if (SceneLoader.inGame())
         {
-            InitDynamicVolume();
+			InitDynamicVolume();
         }
     }
 
@@ -85,6 +87,12 @@ public class AudioController : MonoBehaviour
         vecMin = bounds.transform.position - bounds.transform.localScale / 2;
         vecMax = vecMin + bounds.transform.localScale;
         FindTilePositions();
+		StartCoroutine(SoundChecker());
+	}
+
+	IEnumerator SoundChecker()
+	{
+		yield return new WaitForEndOfFrame();
 		if (soundtrackA.volume < musicvol)
 		{
 			SwitchSound();
