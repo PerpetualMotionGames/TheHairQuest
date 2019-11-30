@@ -55,5 +55,9 @@ public class Settings : MonoBehaviour
 	{
 		alphaText.text = "" + Mathf.Round(alphaSlider.value * 10) / 10f;
 		PlayerPrefs.SetFloat("alpha", alphaSlider.value);
+		if (SceneLoader.inGame())
+		{
+			GameObject.Find("Player").GetComponent<TileSwitch>().ChangeAlphaVal(alphaSlider.value);
+		}
 	}
 }
