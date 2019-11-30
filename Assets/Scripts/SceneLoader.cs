@@ -12,13 +12,16 @@ public class SceneLoader : MonoBehaviour
 	private PostProcessVolume vol;
 	private GameObject inGameUI;
 
-    public static int firstLevelIndex = 3;
+    public static int firstLevelIndex = 4;
 
     public static bool inGame()
     {
         return CurrentScene() >= firstLevelIndex;
     }
-
+	public static void LoadFirstLevel()
+	{
+		SceneManager.LoadScene(firstLevelIndex);
+	}
 	private void Start()
 	{ 
 		Time.timeScale = 1;

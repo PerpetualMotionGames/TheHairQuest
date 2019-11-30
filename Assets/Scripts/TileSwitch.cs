@@ -26,12 +26,14 @@ public class TileSwitch : MonoBehaviour
 	public float hueChange = 30f;
 
 	public float frontAlph = 1;
-	public float backAlph = 0.2f;
+	private float backAlph = 0.1f;
 	public GameObject crate;
     public string[] badTileNames = { "jungleTilemap_9", "jungleTilemap_19", "jungleTilemap_8", "jungleTilemap_18" }; //all the tiles that will kill us
 
     void Start()
     {
+		backAlph = PlayerPrefs.GetFloat("alpha", 0.1f);
+		minAlpha = backAlph;
         player = GameObject.Find("Player");
 		activeTileSet = 0;
 		col = new ColorParameter();
@@ -188,9 +190,9 @@ public class TileSwitch : MonoBehaviour
 		if(onladder)
 		{
 			gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);		
-			if (Input.GetKey(KeyCode.UpArrow))
+			if (Mathf.Abs(Input.GetAxis("Vertical"))>0.3f)
 			{
-				transform.position += Vector3.up * Time.deltaTime * 3f;
+				transform.position += Vector3.up * (Input.GetAxis("Vertical")<0? -1:1) * Time.deltaTime * 3f;
 				gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 			}
 		}

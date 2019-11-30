@@ -48,7 +48,7 @@ public class LevelSelect : MonoBehaviour
 
 	private void UpdateButtons()
 	{
-		int tutorialIndex = 3;
+		int tutorialIndex = SceneLoader.firstLevelIndex;
 		Debug.Log(tutorialIndex);
 		for(int i = 0; i < numLevels; i++)
 		{
