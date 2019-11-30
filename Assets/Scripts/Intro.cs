@@ -10,7 +10,7 @@ public class Intro : MonoBehaviour
 	public Text text2;
 	public Text text3;
 	public Button Next;
-	private float tinyDelay = 0.2f;
+	private float tinyDelay = 0.5f;
 	float curTime;
 	public Text buttonText;
 	Text[] fields;
