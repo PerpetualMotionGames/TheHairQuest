@@ -21,6 +21,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ExampleTutorial.unity
     guid: d69a2b3ccf43a8a40b1d12c192616cbc
   - enabled: 1
+    path: Assets/Scenes/JPsLevel.unity
+    guid: bd1e97403b62768489ed278053803a1d
+  - enabled: 1
     path: Assets/Scenes/KatieExampleLevel.unity
     guid: 9a4ebc5e957e33f4086ca32fb537a86e
   - enabled: 1

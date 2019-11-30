@@ -10,6 +10,7 @@ public class HealthUI : MonoBehaviour
 	public Sprite[] livesStates;
 	public GameObject healthbar;
 	PlayerController playerControl;
+	public GameObject compass;
     void Start()
     {
 		playerControl = GameObject.Find("Player").GetComponent<PlayerController>();
@@ -20,6 +21,7 @@ public class HealthUI : MonoBehaviour
     {
 		lives = playerControl.GetHealth();
 		UpdateUI();
+		CompassUI();
     }
 
 	public void UpdateUI()
@@ -34,5 +36,22 @@ public class HealthUI : MonoBehaviour
 			healthbar.GetComponent<Image>().color = trans;
 		}
 		
+	}
+
+	public void CompassUI()
+	{
+		Vector3 rotation = (GameObject.Find("LevelExit").transform.position- GameObject.Find("Player").transform.position);
+		Debug.Log(rotation);
+		Debug.Log(Quaternion.LookRotation(rotation));
+		float angle;
+		if (rotation.x > 0)
+		{
+			angle = Mathf.Atan(rotation.y / rotation.x) * Mathf.Rad2Deg;
+		}
+		else
+		{
+			angle = Mathf.Atan(rotation.y / rotation.x) * Mathf.Rad2Deg+180;
+		}
+		compass.GetComponent<RectTransform>().rotation = Quaternion.Euler(0,0,angle);
 	}
 }
