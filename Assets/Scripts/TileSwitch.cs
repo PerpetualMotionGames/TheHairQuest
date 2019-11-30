@@ -45,6 +45,13 @@ public class TileSwitch : MonoBehaviour
         ResetColliders();
 	}
 
+	public void ChangeAlphaVal(float alph)
+	{
+		backAlph = alph;
+		minAlpha = alph;
+		SetAlpha(frontAlph,backAlph);
+	}
+
     public void ResetColliders()
     {
         //for some reason upon launching a new scene unity is still using the tilemap collider of the old level whilst showing us the new one
