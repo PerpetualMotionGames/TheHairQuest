@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Projectile
   - audio
+  - crate
   layers:
   - Default
   - TransparentFX

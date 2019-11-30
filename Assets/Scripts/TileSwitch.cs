@@ -27,7 +27,7 @@ public class TileSwitch : MonoBehaviour
 
 	public float frontAlph = 1;
 	public float backAlph = 0.2f;
-
+	public GameObject crate;
     public string[] badTileNames = { "jungleTilemap_9", "jungleTilemap_19", "jungleTilemap_8", "jungleTilemap_18" }; //all the tiles that will kill us
 
     void Start()
@@ -165,7 +165,18 @@ public class TileSwitch : MonoBehaviour
 		}
 		if (Input.GetKeyDown(KeyCode.R))
 		{
-			SceneLoader.ReloadCurrentScene();
+			if (SceneLoader.CurrentScene() == SceneLoader.firstLevelIndex)
+			{
+				player.transform.position = new Vector3(-23, -2, 0);
+				GameObject cr = GameObject.FindGameObjectWithTag("crate");
+				Destroy(cr.gameObject);
+				Instantiate(crate, new Vector3(80.5f, 3.5f, 0), Quaternion.identity);
+			}
+			else
+			{
+				SceneLoader.ReloadCurrentScene();
+			}
+			
 		}
 		//touching ladder
 		bool onladder = false;
