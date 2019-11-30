@@ -38,7 +38,7 @@ public class Settings : MonoBehaviour
 		PlayerPrefs.SetFloat("MusicVolume", musicSlider.value);
         try
         {
-            GameObject.Find("AudioController").GetComponent<AudioController>().SetVolume();
+            GameObject.Find("AudioController").GetComponent<AudioController>().SettingsVolume();
         }
         catch
         {

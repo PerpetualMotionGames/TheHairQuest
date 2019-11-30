@@ -10,6 +10,8 @@ public class Intro : MonoBehaviour
 	public Text text2;
 	public Text text3;
 	public Button Next;
+	private float tinyDelay = 0.2f;
+	float curTime;
 	public Text buttonText;
 	Text[] fields;
 	string[] para1 = { "This is baldy! An experimental physicist", "Recently baldy has been working on some new interdimensional technology", "But one of his experiments went horribly wrong..." };
@@ -26,6 +28,7 @@ public class Intro : MonoBehaviour
 
 	void Start()
 	{
+		curTime = Time.time;
 		tuples = new string[][] { para1, para2, para3};
 		fields = new Text[] { text1, text2, text3 };
 		setText(tuples[0]);
@@ -55,25 +58,32 @@ public class Intro : MonoBehaviour
 
 	public void LoadNext()
 	{
-		if(para==2 && section == 1)
+		if (Time.time - curTime > tinyDelay)
 		{
-			buttonText.text = "Play";
-		}
-		if(para==2 && section == 2)
-		{
-			SceneLoader.LoadFirstLevel();
-		}
-		else
-		{
-			if (section == 2)
+			if (para == 2 && section == 1)
 			{
-				StartCoroutine(nextParagraph());
+				buttonText.text = "Play";
+			}
+			if (para == 2 && section == 2)
+			{
+				text1.CrossFadeAlpha(0, 0,true);
+				text3.CrossFadeAlpha(0, 0,true);
+				text2.text = "Loading";
+				SceneLoader.LoadFirstLevel();
 			}
 			else
 			{
-				section += 1;
-				fields[section].CrossFadeAlpha(1, alphaTime, true);
+				if (section == 2)
+				{
+					StartCoroutine(nextParagraph());
+				}
+				else
+				{
+					section += 1;
+					fields[section].CrossFadeAlpha(1, alphaTime, true);
+				}
 			}
+			curTime = Time.time;
 		}
 	}
 

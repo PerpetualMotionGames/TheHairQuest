@@ -8,6 +8,7 @@ public class LevelSelect : MonoBehaviour
 	public Button[] levels;
 	private int numLevels;
 	private bool[] doneLevel;
+	public Text loadingText;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +37,7 @@ public class LevelSelect : MonoBehaviour
 
 	private void LoadLevel(int index)
 	{
+		loadingText.text = "Loading";
 		if (index < SceneManager.sceneCountInBuildSettings)
 		{
 			SceneManager.LoadScene(index);

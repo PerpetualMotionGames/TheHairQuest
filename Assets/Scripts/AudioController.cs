@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 
 public class AudioController : MonoBehaviour
 {
+	AudioClip[][] pairs;
+	public AudioClip[] tracks;
     public AudioSource soundtrackA, soundtrackB;
 	private static float musicvol;
 	private static float soundvol;
@@ -39,15 +41,39 @@ public class AudioController : MonoBehaviour
 		}
 		
 	}
+
+	void chooseNewSountrack(int clipIndex = -1)
+	{
+		int newIndex;
+		if (clipIndex == -1)
+		{
+			newIndex = Random.Range(0, pairs.Length);
+		}
+		else
+		{
+			newIndex = clipIndex;
+		}
+		soundtrackA.clip = pairs[newIndex][0];
+		soundtrackB.clip = pairs[newIndex][1];
+		soundtrackA.Play();
+		soundtrackB.Play();
+	}
 	void Start()
     {
+		pairs = new AudioClip[tracks.Length / 2][];
+		for(int i = 0; i < pairs.Length; i++)
+		{
+			pairs[i] = new AudioClip[2];
+			pairs[i][0] = tracks[2 * i];
+		    pairs[i][1] = tracks[2 * i + 1];
+		}
 		musicvol = PlayerPrefs.GetFloat("MusicVolume", 1);
 		soundvol = PlayerPrefs.GetFloat("SoundVolume",1);
       
         soundtrackB.volume = 0;
         soundtrackA.volume = musicvol;
-        soundtrackA.Play();
-        soundtrackB.Play();
+		soundtrackA.Play();
+		soundtrackB.Play();
 
         if (SceneLoader.inGame())
         {
@@ -67,10 +93,28 @@ public class AudioController : MonoBehaviour
         soundtrackA.volume = musicvol;
     }
 
+	public void SettingsVolume()
+	{
+		musicvol = PlayerPrefs.GetFloat("MusicVolume", 1);
+		soundvol = PlayerPrefs.GetFloat("SoundVolume", 1);
+
+		if(soundtrackA.volume > 0)
+		{
+			soundtrackA.volume = musicvol;
+			soundtrackB.volume = 0;
+		}
+		else
+		{
+			soundtrackB.volume = musicvol;
+			soundtrackA.volume = 0;
+		}
+	}
+
     void onSceneChange(Scene scene, LoadSceneMode mode)
     {
         if (SceneLoader.inGame())
         {
+			if (soundtrackA.clip != tracks[(scene.buildIndex % 4) * 2]) chooseNewSountrack(scene.buildIndex % 4);//StartCoroutine(ChangeTrack(scene.buildIndex % 4));
 			InitDynamicVolume();
         }
     }
@@ -135,6 +179,11 @@ public class AudioController : MonoBehaviour
         {
             AdjustDynamicVolume();
         }
+		if(!soundtrackA.isPlaying && !soundtrackB.isPlaying)
+		{
+			//StartCoroutine(ChangeTrack());
+			chooseNewSountrack();
+		}
     }
 
     void AdjustDynamicVolume()
@@ -193,7 +242,26 @@ public class AudioController : MonoBehaviour
         muted.volume = 0;
     }
 
-    public static void PlaySound(string clip) {
+	IEnumerator ChangeTrack(int newAudioClipIndex = -1)
+	{
+		float transitionTime = 0.5f;
+		AudioSource playing = audioState == 0 ? soundtrackA : soundtrackB;
+		//AudioSource playing = audioState == 0 ? soundtrackB : soundtrackA;
+
+		while (playing.volume > 0.05f)
+		{
+			playing.volume -= musicvol * Time.deltaTime / transitionTime;
+			yield return new WaitForEndOfFrame();
+		}
+		chooseNewSountrack(newAudioClipIndex);
+		while(playing.volume < musicvol)
+		{
+			playing.volume += musicvol * Time.deltaTime / transitionTime;
+		}
+		playing.volume = musicvol;
+	}
+
+	public static void PlaySound(string clip) {
         AudioSource audioSource = GameObject.Find(clip).GetComponent<AudioSource>();
 		audioSource.volume = soundvol;
         if (audioSource == null) {
