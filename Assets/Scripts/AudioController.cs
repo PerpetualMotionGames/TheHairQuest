@@ -108,7 +108,11 @@ public class AudioController : MonoBehaviour
 			soundtrackB.volume = musicvol;
 			soundtrackA.volume = 0;
 		}
-		AdjustDynamicVolume();
+		if (SceneLoader.inGame())
+		{
+			AdjustDynamicVolume();
+		}
+		
 	}
 
     void onSceneChange(Scene scene, LoadSceneMode mode)
