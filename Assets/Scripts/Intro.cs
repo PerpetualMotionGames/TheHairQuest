@@ -16,9 +16,9 @@ public class Intro : MonoBehaviour
 	Text[] fields;
 
 
-    string[] para1 = { "The year is 2112.", "Our story follows one Dr.Rex `Baldy` Garibaldi,", "a renowned theoretical physicist specializing in multi-dimensional travel." };
-	string[] para2 = { "A man with much inside his head, and sadly, less on top with each passing year.", "On an excursion to the remote and savage wastes of Dimension YYZ,the good doctor has a scuffle", "with thewarlike gelatine-people, the Morpaglorps, and while he escapes with his life, his beloved hairpiece does not make the journey with him." };
-	string[] para3 = { "Torn between risking life and limb on a vain and dangerous journey into the interdimensional wilds", "facing the ridicule of his colleagues at the next physics department social hour", "Dr.Garibaldi sets out onan intrepid dimension-leaping expedition to restore his 'do to its former glory..." };
+    string[] para1 = { "The year is 2112.", "Our story follows one Dr. Rex `Baldy` Garibaldi,", "a renowned theoretical physicist specializing in multi-dimensional travel." };
+	string[] para2 = { "A man with much inside his head, and sadly, less on top with each passing year.", "On an excursion to the remote and savage wastes of Dimension YYZ, the good doctor has a scuffle", "with the warlike gelatine-people, the Morpaglorps, and while he escapes with his life, his beloved hairpiece does not make the journey with him." };
+	string[] para3 = { "Torn between risking life and limb on a vain and dangerous journey into the interdimensional wilds", "facing the ridicule of his colleagues at the next physics department social hour", "Dr.Garibaldi sets out on an intrepid dimension-leaping expedition to restore his 'do to its former glory..." };
 	//string[] para1 = { "This is baldy! An experimental physicist", "Recently baldy has been working on some new interdimensional technology", "But one of his experiments went horribly wrong..." };
 	//string[] para2 = { "Baldy got caught in a dimension warp!", "He managed to escape alive, but most of his hair was lost in another world", "many of his belongings were lost too" };
 	//string[] para3 = { "Help baldy on his quest to regrow his hair!", "Shift between worlds to solve puzzles and find the hair syrum", "Baldy is counting on you." };
