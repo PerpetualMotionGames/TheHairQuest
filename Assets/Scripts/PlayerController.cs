@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool canDoubleJump = true;
     private bool facingRight = true;
     private bool grounded = false;
+    private bool airbourne = false;
     private Vector2 previousVelocity;
     private Vector2 hitVelocity;
 	public bool paused;
@@ -90,8 +91,10 @@ public class PlayerController : MonoBehaviour {
     private void FixedUpdate() {
 
         Vector2 velocity = rb2d.velocity;
-        bool wasGrounded = grounded;
         grounded = Grounded();
+        if (!grounded) {
+            airbourne = true;
+        }
         TileSwitch tileSwitch = GetComponent<TileSwitch>();
         Tilemap tiles = tileSwitch.GetActiveTileset();
         TileBase leftFootTile = tiles.GetTile(tiles.WorldToCell(leftFoot.transform.position));
@@ -116,7 +119,7 @@ public class PlayerController : MonoBehaviour {
             inWater = false;
         }
 
-        if (!wasGrounded && grounded && previousVelocity != null && previousVelocity.y < 0) {
+        if (airbourne && grounded && previousVelocity != null && previousVelocity.y <= 0) {
             OnLanded(velocity.y >= 0 ? previousVelocity : velocity);
         }
         
@@ -180,7 +183,7 @@ public class PlayerController : MonoBehaviour {
         if (velocity.y <= -(TERMINAL_VELOCITY / 10)) {
             AudioController.PlaySound("PlayerHit");
         }
-        
+        airbourne = false;
         canDoubleJump = true;
         animator.SetBool("DoubleJump", false);
         animator.SetBool("IsJumping", false);
