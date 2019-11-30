@@ -9,18 +9,16 @@ public class HealthUI : MonoBehaviour
 	int lives=3;
 	public Sprite[] livesStates;
 	public GameObject healthbar;
+	PlayerController playerControl;
     void Start()
     {
-        
+		playerControl = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-		if (Input.GetKeyUp(KeyCode.Alpha8))
-		{
-			lives -= 1;
-		}
+		lives = playerControl.GetHealth();
 		UpdateUI();
     }
 
