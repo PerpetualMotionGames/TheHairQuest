@@ -11,7 +11,7 @@ public class ShootingTile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Shoot(2));
+        StartCoroutine(Shoot(3));
         tileSwitch = GameObject.Find("Player").GetComponent<TileSwitch>();
     }
 
