@@ -4,7 +4,9 @@ using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour {
 
-
+	private bool pushing = false;
+	private GameObject pushObject;
+	private bool checkCrate = false;
     
     private GameObject leftFoot;
     private GameObject rightFoot;
@@ -89,6 +91,11 @@ public class PlayerController : MonoBehaviour {
 
     // Fixed update is called just before calculating any physics
     private void FixedUpdate() {
+
+		if (checkCrate)
+		{
+			checkPush(pushObject);
+		}
 
         Vector2 velocity = rb2d.velocity;
         grounded = Grounded();
@@ -179,7 +186,10 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public void OnLanded(Vector2 velocity){
+
+
+
+	public void OnLanded(Vector2 velocity){
         if (velocity.y <= -(TERMINAL_VELOCITY / 10)) {
             AudioController.PlaySound("PlayerHit");
         }
@@ -232,4 +242,42 @@ public class PlayerController : MonoBehaviour {
             kill.PlayerKill();
         }
     }
+
+	void checkPush(GameObject crate)
+	{
+		if (Mathf.Abs(crate.GetComponent<Rigidbody2D>().velocity.x) > 0.5f)
+		{
+			if (!pushing)
+			{
+				AudioController.PlaySound("PushBox");
+				AudioController.ChangeVolume("PushBox", PlayerPrefs.GetFloat("SoundVolume", 1));
+				pushing = true;
+			}
+			
+		}
+		else
+		{ 
+			AudioController.ChangeVolume("PushBox", 0);
+			pushing = false;
+		}
+	}
+
+	public void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "crate")
+		{
+			pushObject = collision.gameObject;
+			checkCrate = true;
+		}
+	}
+
+	private void OnCollisionExit2D(Collision2D collision)
+	{
+		if (collision.gameObject.tag == "crate")
+		{
+			checkCrate = false;
+			pushing = false;
+			AudioController.ChangeVolume("PushBox", 0);
+		}
+	}
 }
