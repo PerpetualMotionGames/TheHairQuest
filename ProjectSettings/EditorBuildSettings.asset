@@ -24,9 +24,15 @@ EditorBuildSettings:
     path: Assets/Scenes/KatieExampleLevel.unity
     guid: 9a4ebc5e957e33f4086ca32fb537a86e
   - enabled: 1
+    path: Assets/Scenes/JaysLevel.unity
+    guid: 3a5462001d016614a9ef93167f8f38a2
+  - enabled: 1
     path: Assets/Scenes/RandoLevel.unity
     guid: c085da68b817372448c7f922715eeda2
   - enabled: 1
     path: Assets/Scenes/NewLevel.unity
     guid: 62aafb50a48bbe8458621ae0920ae001
+  - enabled: 1
+    path: Assets/Scenes/Outro.unity
+    guid: c70798619498856469b7e54907196be0
   m_configObjects: {}
