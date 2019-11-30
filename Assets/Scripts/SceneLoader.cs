@@ -16,7 +16,7 @@ public class SceneLoader : MonoBehaviour
 
     public static bool inGame()
     {
-        return CurrentScene() >= firstLevelIndex;
+        return (CurrentScene() >= firstLevelIndex && CurrentScene() < firstLevelIndex+5);
     }
 	public static void LoadFirstLevel()
 	{
