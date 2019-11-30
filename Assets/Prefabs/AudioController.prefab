@@ -53,6 +53,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cfb205acdee34a47ac08e648ff38ac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tracks:
+  - {fileID: 8300000, guid: fc84a36ef319d024da1c240a58ca8565, type: 3}
+  - {fileID: 8300000, guid: 96a4eb88495a4dd4f8fec23e9a466af3, type: 3}
+  - {fileID: 8300000, guid: 5632069de3582834baac2719f1d864ba, type: 3}
+  - {fileID: 8300000, guid: 26e563ed18120a845bba3ba2c69d8a9f, type: 3}
+  - {fileID: 8300000, guid: bc37ee3235c104a449aaffd6184c15b6, type: 3}
+  - {fileID: 8300000, guid: 2d2473a0c8e0ec14998d138828236837, type: 3}
+  - {fileID: 8300000, guid: e6a7f02233b4bf94d88987caf95a869b, type: 3}
+  - {fileID: 8300000, guid: 8ff697c40769a014d8b66a09ebbb6298, type: 3}
   soundtrackA: {fileID: 6973010525828804668}
   soundtrackB: {fileID: 3408330625308691549}
 --- !u!1 &1619214862332880827
@@ -100,7 +109,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -989,7 +998,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
