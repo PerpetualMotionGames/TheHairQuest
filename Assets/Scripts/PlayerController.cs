@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour {
 
@@ -18,7 +19,10 @@ public class PlayerController : MonoBehaviour {
     private Vector2 previousVelocity;
     private Vector2 hitVelocity;
 	public bool paused;
-
+    private int health;
+    private bool inWater = false;
+    private float timeInWater = 0;
+    private bool dying = false;
     // gravity increases velocity of an object at 9.8 meters per second
     // example, after 3 seconds of free fall, an object will be travelling at 9.8 * 3 meters per second
     private static float GRAVITY = 9.8f;
@@ -48,6 +52,7 @@ public class PlayerController : MonoBehaviour {
         rightFoot = GameObject.Find("RightFoot");
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        health = 3;
     }
 
     // Update is called once per frame
@@ -62,7 +67,7 @@ public class PlayerController : MonoBehaviour {
             animator.SetBool("DoubleJump", false);
         }
 
-        if (Input.GetButtonDown("Jump")) {
+        if (Input.GetButtonDown("Jump") && !inWater) {
             if (!grounded) {
                 if (canDoubleJump){
                     jump = true;
@@ -87,7 +92,29 @@ public class PlayerController : MonoBehaviour {
         Vector2 velocity = rb2d.velocity;
         bool wasGrounded = grounded;
         grounded = Grounded();
+        TileSwitch tileSwitch = GetComponent<TileSwitch>();
+        Tilemap tiles = tileSwitch.GetActiveTileset();
+        TileBase leftFootTile = tiles.GetTile(tiles.WorldToCell(leftFoot.transform.position));
+        TileBase rightFootTile = tiles.GetTile(tiles.WorldToCell(rightFoot.transform.position));
 
+
+        if ((leftFootTile != null && (leftFootTile.name == "jungleTilemap_9" || leftFootTile.name == "jungleTilemap_19" || leftFootTile.name == "jungleTilemap_8" || leftFootTile.name == "jungleTilemap_18")) ||
+            (rightFootTile != null && (rightFootTile.name == "jungleTilemap_9" || rightFootTile.name == "jungleTilemap_19" || rightFootTile.name == "jungleTilemap_8" || rightFootTile.name == "jungleTilemap_18"))) {
+            if (!inWater) {
+                velocity.x /= 2;
+                velocity.y /= 3;
+                AudioController.PlaySound("Splash");
+                timeInWater = Time.time;
+            }
+            inWater = true;
+            if (Time.time - timeInWater > 1) {
+                AudioController.PlaySound("PlayerHit");
+                health--;
+                timeInWater++;
+            }
+        } else {
+            inWater = false;
+        }
 
         if (!wasGrounded && grounded && previousVelocity != null && previousVelocity.y < 0) {
             OnLanded(velocity.y >= 0 ? previousVelocity : velocity);
@@ -97,30 +124,30 @@ public class PlayerController : MonoBehaviour {
         velocity.x += hitVelocity.x;
 
         if (velocity.x < 0) {
-            velocity.x += FLOOR_FRICTION * Time.fixedDeltaTime;
+            velocity.x += FLOOR_FRICTION * Time.fixedDeltaTime * (inWater ? 2f : 1f);
             // stops friction changing player from sliding left to right, instead they should stop
             if (velocity.x > 0) {
                 velocity.x = 0;
             }
         } else if (velocity.x > 0) {
-            velocity.x -= FLOOR_FRICTION * Time.fixedDeltaTime;
+            velocity.x -= FLOOR_FRICTION * Time.fixedDeltaTime * (inWater ? 2f : 1f);
             // stops friction changing player from sliding left to right, instead they should stop
             if (velocity.x < 0) {
                 velocity.x = 0;
             }
         }
 
-        velocity.y -= GRAVITY * Time.fixedDeltaTime;
+        velocity.y -= GRAVITY * Time.fixedDeltaTime * (inWater ? 0.1f : 1f);
         if (velocity.y < -TERMINAL_VELOCITY) {
             velocity.y = -TERMINAL_VELOCITY;
         }
 
 
-        velocity.x += moveHorizontal * RUN_SPEED_ACCELERATION * Time.fixedDeltaTime;
-        if (velocity.x > MAX_RUN_SPEED) {
-            velocity.x = MAX_RUN_SPEED;
-        } else if (velocity.x < -MAX_RUN_SPEED) {
-            velocity.x = -MAX_RUN_SPEED;
+        velocity.x += moveHorizontal * RUN_SPEED_ACCELERATION * Time.fixedDeltaTime * (inWater ? 0.5f : 1f);
+        if (velocity.x > MAX_RUN_SPEED * (inWater ? 0.5f : 1f)) {
+            velocity.x = MAX_RUN_SPEED * (inWater ? 0.5f : 1f);
+        } else if (velocity.x < -(MAX_RUN_SPEED * (inWater ? 0.5f : 1f))) {
+            velocity.x = -(MAX_RUN_SPEED * (inWater ? 0.5f : 1f));
         }
         if (jump) {
             velocity.y = JUMP_ACCELERATION;
@@ -131,6 +158,9 @@ public class PlayerController : MonoBehaviour {
         hitVelocity.x = 0;
         jump = false;
         falling = velocity.y < 0 && !grounded;
+        if (health <= 0) {
+            Die();
+        }
 
     }
 
@@ -142,6 +172,7 @@ public class PlayerController : MonoBehaviour {
             hitVelocity = obj.GetComponent<Rigidbody2D>().velocity;
             obj.gameObject.SetActive(false);
             AudioController.PlaySound("PlayerHit");
+            health--;
         }
     }
 
@@ -171,12 +202,31 @@ public class PlayerController : MonoBehaviour {
         Vector3 bottomPosition = leftFoot.transform.position;
         // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
-        if (hit.collider) return true;
+        if (hit.collider) {
+            return true;
+        }
 
         // check right foot
         bottomPosition = rightFoot.transform.position;
         // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
         return hit.collider != null;
+    }
+
+    public bool OnWater() {
+        return false;
+    }
+
+    public int GetHealth() {
+        return health;
+    }
+
+    public void Die() {
+        if (!dying) {
+            dying = true;
+            AudioController.PlaySound("GameOver");
+            KillObject kill = gameObject.AddComponent<KillObject>();
+            kill.PlayerKill();
+        }
     }
 }
