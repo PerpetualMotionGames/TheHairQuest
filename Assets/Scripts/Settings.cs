@@ -49,6 +49,10 @@ public class Settings : MonoBehaviour
 	{
 		soundText.text = Mathf.Round(soundSlider.value * 100) + "%";
 		PlayerPrefs.SetFloat("SoundVolume", soundSlider.value);
+		if (SceneLoader.inGame())
+		{
+			GameObject.Find("AudioController").GetComponent<AudioController>().SettingsVolume();
+		}
 	}
 
 	public void UpdateAlpha()
