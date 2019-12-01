@@ -41,8 +41,8 @@ public class HealthUI : MonoBehaviour
 	public void CompassUI()
 	{
 		Vector3 rotation = (GameObject.Find("LevelExit").transform.position- GameObject.Find("Player").transform.position);
-		Debug.Log(rotation);
-		Debug.Log(Quaternion.LookRotation(rotation));
+		// Debug.Log(rotation);
+		// Debug.Log(Quaternion.LookRotation(rotation));
 		float angle;
 		if (rotation.x > 0)
 		{

@@ -234,7 +234,8 @@ public class TileSwitch : MonoBehaviour
     {
         //if you shift whilst on top of a tile die - need to do this for water and lava too
         TileBase hitTile = tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(player.transform.position));
-        if (hitTile != null && !dying && hitTile.name != "jungleTilemap_28" && hitTile.name != "jungleTilemap_9" && hitTile.name != "jungleTilemap_19" && hitTile.name != "jungleTilemap_8" && hitTile.name != "jungleTilemap_18")
+
+        if (hitTile != null && tileStates[activeTileSet].GetColliderType(tileStates[activeTileSet].WorldToCell(player.transform.position)) != Tile.ColliderType.None) 
         {
             dying = true;
             player.GetComponent<PlayerController>().Die();

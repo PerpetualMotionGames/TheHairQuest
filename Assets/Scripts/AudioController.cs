@@ -193,6 +193,9 @@ public class AudioController : MonoBehaviour
 
     void AdjustDynamicVolume()
     {
+        if (tileSwitch == null) {
+            return;
+        }
         var soundVolume = PlayerPrefs.GetFloat("SoundVolume", 1);
         var closest = tileSwitch.activeTileSet == 0 ? DistanceToNearest(waterTiles) : DistanceToNearest(lavaTiles);
         if (tileSwitch.activeTileSet == 0)
