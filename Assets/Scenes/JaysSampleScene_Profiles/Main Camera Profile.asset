@@ -93,7 +93,7 @@ MonoBehaviour:
     value: -2.8
   colorFilter:
     overrideState: 1
-    value: {r: 0.9019608, g: 1, b: 1, a: 1}
+    value: {r: 1, g: 1, b: 1, a: 1}
   hueShift:
     overrideState: 1
     value: 2
@@ -1415,11 +1415,11 @@ MonoBehaviour:
     overrideState: 1
     value: 0
   keyValue:
-    overrideState: 0
+    overrideState: 1
     value: 1
   eyeAdaptation:
-    overrideState: 0
-    value: 0
+    overrideState: 1
+    value: 1
   speedUp:
     overrideState: 1
     value: 20
