@@ -33,10 +33,11 @@ public class CameraController : MonoBehaviour {
         /* the way the movement is handled, allows the camera to move only if you're passing the center of the screen, 
          / or are past the offset, this way the camera will not lock onto you and makes it smoother overall
          / 
-         / also check that the camera is not wider than the scene otherwise it will constantly adjust to try and
-         / fit inside the bounds causing a crazy bad flickering
-        */ 
-        if (!lockX && width*2 < cameraBounds.transform.localScale.x) {
+         / also check that the camera is not wider / taller than the bounds, if it is lock it to the center
+        */
+        if (width * 2 > cameraBounds.transform.localScale.x) {
+            x = cameraBounds.transform.position.x;
+        } else if (!lockX) {
             // move the camera if the player is passed the center, or left of the offset
             if (playerX > x) {
                 x = playerX;
@@ -51,9 +52,10 @@ public class CameraController : MonoBehaviour {
             } else if (x + width > rightBound) {
                 x = rightBound - width;
             }
-
         }
-        if (!lockY && height*2 < cameraBounds.transform.localScale.y) {
+        if (height * 2 > cameraBounds.transform.localScale.y) {
+            y = cameraBounds.transform.position.y;
+        } else if (!lockY) {
             // move the camera if the player is passed the center, or below the offset
             if (playerY > y) {
                 y = playerY;

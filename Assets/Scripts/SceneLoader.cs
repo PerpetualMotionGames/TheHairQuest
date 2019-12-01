@@ -46,14 +46,14 @@ public class SceneLoader : MonoBehaviour
 
 	public void LoadNextLevel()
 	{
-		Debug.Log(thisIndex);
+		// Debug.Log(thisIndex);
 		if(thisIndex < SceneManager.sceneCountInBuildSettings - 1)
 		{
 			LoadLevel(thisIndex + 1);
 		}
 		else
 		{
-			Debug.Log(SceneManager.sceneCountInBuildSettings);
+			// Debug.Log(SceneManager.sceneCountInBuildSettings);
 			LoadLevel(0);
 		}
 	}
