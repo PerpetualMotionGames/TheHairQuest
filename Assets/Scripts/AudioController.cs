@@ -122,7 +122,8 @@ public class AudioController : MonoBehaviour
 			if (soundtrackA.clip != tracks[(scene.buildIndex % 4) * 2]) chooseNewSountrack(scene.buildIndex % 4);//StartCoroutine(ChangeTrack(scene.buildIndex % 4));
 			InitDynamicVolume();
         }
-    }
+		AudioController.ChangeVolume("BoxCollision",0);
+	}
 
     void InitDynamicVolume()
     {
