@@ -34,6 +34,10 @@ public class SceneLoader : MonoBehaviour
 			inGameUI.SetActive(false);
 		}
 	}
+	public void QuitGame()
+	{
+		Application.Quit();
+	}
 	public void LoadLevel(int index)
 	{
 		SceneManager.LoadScene(index);
