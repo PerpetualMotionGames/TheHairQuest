@@ -42,6 +42,12 @@ public class AudioController : MonoBehaviour
 		
 	}
 
+	public void stopSounds()
+	{
+		//GameObject.Find("PushBox").GetComponent<AudioSource>().
+		ChangeVolume("PushBox", 0);
+	}
+
 	void chooseNewSountrack(int clipIndex = -1)
 	{
 		int newIndex;
@@ -122,7 +128,7 @@ public class AudioController : MonoBehaviour
 			if (soundtrackA.clip != tracks[(scene.buildIndex % 4) * 2]) chooseNewSountrack(scene.buildIndex % 4);//StartCoroutine(ChangeTrack(scene.buildIndex % 4));
 			InitDynamicVolume();
         }
-		AudioController.ChangeVolume("BoxCollision",0);
+		stopSounds();
 	}
 
     void InitDynamicVolume()
