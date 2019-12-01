@@ -18,7 +18,6 @@ public class Projectile : MonoBehaviour
 
     void FixedUpdate()
     {
-        //tilemap = this.GetComponentInParent<Tilemap>();
         TileBase hitTile = tilemap.GetTile(tilemap.WorldToCell(transform.position));
         if (hitTile != null && tilemap.GetColliderType(tilemap.WorldToCell(transform.position)) != Tile.ColliderType.None) {
             Destroy(gameObject);
