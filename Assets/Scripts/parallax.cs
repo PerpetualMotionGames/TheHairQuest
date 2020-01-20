@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class paralax : MonoBehaviour
+public class parallax : MonoBehaviour
 {
 	Vector3 startPos;
 	GameObject target;
