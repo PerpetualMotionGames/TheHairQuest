@@ -8,6 +8,7 @@ public class parallax : MonoBehaviour
 	GameObject target;
 	Vector3 mystart;
 	public float modifier;
+	
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,6 @@ public class parallax : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		transform.position = mystart - (startPos - target.transform.position)*modifier;
+        transform.position = mystart - (startPos - target.transform.position) * modifier;
     }
 }
