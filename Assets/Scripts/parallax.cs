@@ -4,22 +4,22 @@ using UnityEngine;
 
 public class parallax : MonoBehaviour
 {
-	Vector3 startPos;
-	GameObject target;
-	Vector3 mystart;
+	GameObject cam;
+	Vector3 camStartPosition;
+	Vector3 myStartPosition;
 	public float modifier;
-	
+
     // Start is called before the first frame update
     void Start()
     {
-		target = GameObject.Find("Main Camera");
-		startPos = target.transform.position;
-		mystart = transform.position;
+		cam = GameObject.Find("Main Camera");
+		camStartPosition = cam.transform.position;
+		myStartPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = mystart - (startPos - target.transform.position) * modifier;
+        transform.position = myStartPosition - (camStartPosition - cam.transform.position) * modifier;
     }
 }
