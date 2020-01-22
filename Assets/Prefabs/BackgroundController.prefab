@@ -60,9 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0317145acc9539f45a17fc3687878b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backGroundImages:
-  - {fileID: 0}
-  - {fileID: 0}
+  backGroundImages: []
   modifiers:
   - 0.4
   - 0.5
