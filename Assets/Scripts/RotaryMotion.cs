@@ -7,10 +7,11 @@ public class RotaryMotion : MonoBehaviour
 	//rotates the given objects at the given constant rate
 	public GameObject[] rotaryObjects;
 	public float[] rotationConstants;
+
     void Start()
     {
 		//first make sure we have enough constants, if not, set the missing ones to zero
-		if (rotationConstants.Length < rotationConstants.Length)
+		if (rotationConstants.Length < rotaryObjects.Length)
 		{
 			var tempArray = new float[rotaryObjects.Length];
 			for(int i = 0; i < rotaryObjects.Length; i++)
@@ -28,12 +29,9 @@ public class RotaryMotion : MonoBehaviour
 		{
 			rotaryObjects[i].transform.Rotate(new Vector3(0, 0, rotationConstants[i])*Time.deltaTime);
 		}
-		if (Input.GetKeyUp(KeyCode.Return))
-		{
-			InvertRotation();
-		}
     }
 
+    //call this upon a shift of dimension to make all rotating objects rotate the other way.
 	public void InvertRotation()
 	{
 		for(int i = 0; i < rotationConstants.Length; i++)

@@ -18,7 +18,7 @@ public class ScrollingBackground : MonoBehaviour
 
     //if the leftmost image reaches the orginal position of its righthand neighbour, the rightmost image becomes the leftmost one
     //similarly if the final image reaches the original image of the penultimate image, the leftmost image becomes the rightmost one
-    int penultimateIndex;
+    private int penultimateIndex;
 
     //boolean that determines if the script is active.
     private bool active = true;
