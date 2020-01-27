@@ -202,6 +202,33 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4354876668297500295}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &275346338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275346337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbd6095aec194db0860355761583162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderEffects: {fileID: 304142183}
+  tilemaps:
+  - {fileID: 1672464708}
+  - {fileID: 17356888}
+  liquid: []
+  stairs: []
+  ladder: []
+  wall: []
+  dimensionShiftTime: 1
+  maxLensDistort: 30
+  inactiveAlpha: 0.1
+  hueChange: 30
+  previewGrain: 1
+  previewSaturation: -30
+  previewPlayerAlpha: 0.1
 --- !u!1 &304142176 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7472409747523378809, guid: 17fcb2ee5d0c93245961b461a24ea3ee,
@@ -220,6 +247,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0267882f1eb3fa34fa2d8405f6218ef8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &304142183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304142176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28fa8b250e726438996de63a1043be3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vol: {fileID: 1738627407}
 --- !u!1 &314770427
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,11 +1603,21 @@ PrefabInstance:
       propertyPath: tileStates.Array.data[0]
       value: 
       objectReference: {fileID: 1672464708}
+    - target: {fileID: 4354876668035933487, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8266226662989609304, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
         type: 3}
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 665255283}
+    - target: {fileID: 8266226662989609304, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6c6d0efd6b60854c8c40b1e60cc75ea, type: 3}
 --- !u!1001 &6067036781513179662

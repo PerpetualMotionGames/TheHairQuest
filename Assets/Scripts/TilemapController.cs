@@ -77,6 +77,10 @@ public class TilemapController : MonoBehaviour
         {
             EndPreview();
         }
+		if (Input.GetKeyUp(KeyCode.Return))
+		{
+			ShiftDimension();
+		}
     }
     /// //////////////////////////////////////////////// 
     /// PUBLIC METHODS
@@ -115,6 +119,19 @@ public class TilemapController : MonoBehaviour
         
         return hitTile.name;
     }
+
+	public void ShiftDimension()
+	{
+		if (CanSwap())
+		{
+			isShifting = true;
+			StartCoroutine(ShiftDimensionTransition());
+		}
+		else
+		{
+			Debug.Log("Cant swap");
+		}
+	}
 
     /// //////////////////////////////////////////////// 
     /// PRIVATE METHODS
@@ -195,9 +212,25 @@ public class TilemapController : MonoBehaviour
     /// ENUMERATORS
     /// ////////////////////////////////////////////////
 
-    IEnumerator ShiftDimension()
+    IEnumerator ShiftDimensionTransition()
     {
+		//set the alpha values over time.
+		StartCoroutine(RenderEffects.SetAlphaOverTime(tilemaps[activemap], inactiveAlpha, dimensionShiftTime));
+		StartCoroutine(RenderEffects.SetAlphaOverTime(tilemaps[1-activemap], 1, dimensionShiftTime));
 
+		//renderEffects.SetEffectOverTime("hue", 30, dimensionShiftTime / 2, true);
+		//renderEffects.SetEffectOverTime("grain", 1, dimensionShiftTime / 2, true);
+		StartCoroutine(renderEffects.SetEffectOverTime("distortion", 30, dimensionShiftTime / 2, true));
+		//half way through the alpha transition we update the colliders
+		yield return new WaitForSeconds(dimensionShiftTime / 2); 
+		//the actual swap
+		activemap = 1 - activemap;
+		tilemaps[activemap].gameObject.GetComponent<TilemapCollider2D>().enabled = true;
+		tilemaps[1 - activemap].gameObject.GetComponent<TilemapCollider2D>().enabled = false;
+
+		//wait for effects to complete
+		yield return new WaitForSeconds(dimensionShiftTime / 2);
+		isShifting = false;
     }
 
 }
