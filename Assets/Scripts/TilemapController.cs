@@ -7,6 +7,7 @@ public class TilemapController : MonoBehaviour
 {
     public RenderEffects renderEffects;
     public Tilemap[] tilemaps;
+    private TilemapRenderer[] tilemapRenderers;
     //which tilemap is currently active.
     private int activemap = 0;
 
@@ -45,8 +46,22 @@ public class TilemapController : MonoBehaviour
     {
         //by default the back layer will have 0.1 alpha
         inactiveAlpha = PlayerPrefs.GetFloat("alpha", 0.1f);
+        if (renderEffects == null)
+        {
+            renderEffects = GameObject.Find("Main Camera").GetComponent<RenderEffects>();
+        }
+        if(tilemaps.Length < 2)
+        {
+            tilemaps = new Tilemap[2];
+            tilemaps[0] = GameObject.Find("Tiles").GetComponent<Tilemap>();
+            tilemaps[1] = GameObject.Find("Tiles2").GetComponent<Tilemap>();
+        }
         player = GameObject.Find("Player");
         ResetColliders();
+        tilemapRenderers = new TilemapRenderer[2];
+        tilemapRenderers[1] = tilemaps[1].gameObject.GetComponent<TilemapRenderer>();
+        tilemapRenderers[0] = tilemaps[0].gameObject.GetComponent<TilemapRenderer>();
+        InitializeAlpha();
     }
 
     private void ResetColliders()
@@ -60,6 +75,12 @@ public class TilemapController : MonoBehaviour
         tiles2.enabled = false;
         tiles1.enabled = true;
         tiles2.enabled = true;
+    }
+
+    private void InitializeAlpha()
+    {
+        RenderEffects.SetAlpha(tilemaps[0], 1);
+        RenderEffects.SetAlpha(tilemaps[1], inactiveAlpha);
     }
 
 
@@ -133,6 +154,11 @@ public class TilemapController : MonoBehaviour
 		}
 	}
 
+    public int ActiveTilemap()
+    {
+        return activemap;
+    }
+
     /// //////////////////////////////////////////////// 
     /// PRIVATE METHODS
     /// //////////////////////////////////////////////// 
@@ -150,6 +176,9 @@ public class TilemapController : MonoBehaviour
         //whichever the active dimension is, we now want to swap the alpha states
         SetTileAlpha(tilemaps[activemap], inactiveAlpha);
         SetTileAlpha(tilemaps[1 - activemap], 1);
+        //we also want the less visible layer to be the one in front
+        tilemapRenderers[activemap].sortingOrder = 1;
+        tilemapRenderers[1 - activemap].sortingOrder = 0;
         //add some grain for effect and saturation
         renderEffects.SetGrain(previewGrain);
         renderEffects.SetSaturation(previewSaturation);
@@ -165,6 +194,8 @@ public class TilemapController : MonoBehaviour
         //now we undo all the changes made in preview
         SetTileAlpha(tilemaps[activemap], 1);
         SetTileAlpha(tilemaps[1 - activemap], inactiveAlpha);
+        tilemapRenderers[activemap].sortingOrder = 0;
+        tilemapRenderers[1 - activemap].sortingOrder = 1;
         renderEffects.SetGrain(0);
         renderEffects.SetSaturation(0);
         RenderEffects.SetAlpha(player, 1);
@@ -208,6 +239,16 @@ public class TilemapController : MonoBehaviour
         return true;
     }
 
+    private void UpdateTileColliders()
+    {
+        //call this during/after a shift to make the relevant collider the correct one
+        tilemaps[activemap].gameObject.GetComponent<TilemapCollider2D>().enabled = true;
+        tilemaps[1 - activemap].gameObject.GetComponent<TilemapCollider2D>().enabled = false;
+        //we put the inactive layer in front for extra visibility
+        tilemapRenderers[activemap].sortingOrder = 0;
+        tilemapRenderers[1 - activemap].sortingOrder = 1;
+    }
+
     /// ////////////////////////////////////////////////
     /// ENUMERATORS
     /// ////////////////////////////////////////////////
@@ -225,8 +266,7 @@ public class TilemapController : MonoBehaviour
 		yield return new WaitForSeconds(dimensionShiftTime / 2); 
 		//the actual swap
 		activemap = 1 - activemap;
-		tilemaps[activemap].gameObject.GetComponent<TilemapCollider2D>().enabled = true;
-		tilemaps[1 - activemap].gameObject.GetComponent<TilemapCollider2D>().enabled = false;
+        UpdateTileColliders();
 
 		//wait for effects to complete
 		yield return new WaitForSeconds(dimensionShiftTime / 2);
