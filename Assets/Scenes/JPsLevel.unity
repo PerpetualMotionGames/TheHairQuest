@@ -2043,6 +2043,11 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4354876668035933472, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
+        type: 3}
+      propertyPath: sceneLoader
+      value: 
+      objectReference: {fileID: 665255283}
     - target: {fileID: 4354876668035933475, guid: b6c6d0efd6b60854c8c40b1e60cc75ea,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2088,7 +2093,8 @@ PrefabInstance:
       propertyPath: sceneLoader
       value: 
       objectReference: {fileID: 665255283}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8266226662989609304, guid: b6c6d0efd6b60854c8c40b1e60cc75ea, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b6c6d0efd6b60854c8c40b1e60cc75ea, type: 3}
 --- !u!1001 &6067036781513179662
 PrefabInstance:
