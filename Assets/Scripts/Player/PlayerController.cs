@@ -2,12 +2,20 @@
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
+    public SceneLoader sceneLoader;
+    private GameObject cameraBounds;
+    private float respawnHeight = 10f;
+    private GameObject player;
+    private TileSwitch tileSwitch;
+    private float lowerBound;
 
-	private bool pushing = false;
-	private GameObject pushObject;
-	private bool checkCrate = false;
-    
+
+
+    private bool pushing = false;
+    private GameObject pushObject;
+    private bool checkCrate = false;
     private GameObject leftFoot;
     private GameObject rightFoot;
     private Rigidbody2D rb2d;
@@ -21,7 +29,7 @@ public class PlayerController : MonoBehaviour {
     private bool airbourne = false;
     private Vector2 previousVelocity;
     private Vector2 hitVelocity;
-	public bool paused;
+    public bool paused;
     private int health;
     private bool inWater = false;
     private float timeInWater = 0;
@@ -50,39 +58,61 @@ public class PlayerController : MonoBehaviour {
 
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         leftFoot = GameObject.Find("LeftFoot");
         rightFoot = GameObject.Find("RightFoot");
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         health = 3;
+
+		cameraBounds = GameObject.Find("CameraBounds");
+		lowerBound = cameraBounds.transform.position.y - cameraBounds.transform.localScale.y/2;
+		player = GameObject.Find("Player");
+        tileSwitch = player.GetComponent<TileSwitch>();
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
 
         // calculate animation effects
         moveHorizontal = Input.GetAxisRaw("Horizontal") * MAX_RUN_SPEED;
 
-        if(falling)
-		{ 
-			animator.SetBool("IsJumping", false);
+        if (falling)
+        {
+            animator.SetBool("IsJumping", false);
             animator.SetBool("DoubleJump", false);
         }
 
-        if (Input.GetButtonDown("Jump") && !inWater) {
-            if (!grounded) {
-                if (canDoubleJump){
+        if (Input.GetButtonDown("Jump") && !inWater)
+        {
+            if (!grounded)
+            {
+                if (canDoubleJump)
+                {
                     jump = true;
                     canDoubleJump = false;
                     animator.SetBool("DoubleJump", true);
                     animator.SetBool("IsJumping", true);
                 }
-            } else {
+            }
+            else
+            {
                 jump = true;
                 animator.SetBool("IsJumping", true);
             }
         }
+
+        if (Input.GetButtonDown("Pause"))
+        {
+            if (!paused)
+            {
+                sceneLoader.Pause();
+            }
+
+        }
+
 
         animator.SetBool("IsWalking", Mathf.Abs(rb2d.velocity.x) > 0.001);
         animator.SetBool("IsFalling", falling);
@@ -90,16 +120,18 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Fixed update is called just before calculating any physics
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
 
-		if (checkCrate)
-		{
-			checkPush(pushObject);
-		}
+        if (checkCrate)
+        {
+            checkPush(pushObject);
+        }
 
         Vector2 velocity = rb2d.velocity;
         grounded = Grounded();
-        if (!grounded) {
+        if (!grounded)
+        {
             airbourne = true;
         }
         TileSwitch tileSwitch = GetComponent<TileSwitch>();
@@ -109,57 +141,73 @@ public class PlayerController : MonoBehaviour {
 
 
         if ((leftFootTile != null && (leftFootTile.name == "jungleTilemap_9" || leftFootTile.name == "jungleTilemap_19" || leftFootTile.name == "jungleTilemap_8" || leftFootTile.name == "jungleTilemap_18")) ||
-            (rightFootTile != null && (rightFootTile.name == "jungleTilemap_9" || rightFootTile.name == "jungleTilemap_19" || rightFootTile.name == "jungleTilemap_8" || rightFootTile.name == "jungleTilemap_18"))) {
-            if (!inWater) {
+            (rightFootTile != null && (rightFootTile.name == "jungleTilemap_9" || rightFootTile.name == "jungleTilemap_19" || rightFootTile.name == "jungleTilemap_8" || rightFootTile.name == "jungleTilemap_18")))
+        {
+            if (!inWater)
+            {
                 velocity.x /= 2;
                 velocity.y /= 3;
                 AudioController.PlaySound("Splash");
                 timeInWater = Time.time;
             }
             inWater = true;
-            if (Time.time - timeInWater > 1) {
+            if (Time.time - timeInWater > 1)
+            {
                 AudioController.PlaySound("PlayerHit");
                 health--;
                 timeInWater++;
             }
-        } else {
+        }
+        else
+        {
             inWater = false;
         }
 
-        if (airbourne && grounded && previousVelocity != null && previousVelocity.y <= 0) {
+        if (airbourne && grounded && previousVelocity != null && previousVelocity.y <= 0)
+        {
             OnLanded(velocity.y >= 0 ? previousVelocity : velocity);
         }
-        
+
         // apply enviromental forces (gravity / friction / hits)
         velocity.x += hitVelocity.x;
 
-        if (velocity.x < 0) {
+        if (velocity.x < 0)
+        {
             velocity.x += FLOOR_FRICTION * Time.fixedDeltaTime * (inWater ? 2f : 1f);
             // stops friction changing player from sliding left to right, instead they should stop
-            if (velocity.x > 0) {
+            if (velocity.x > 0)
+            {
                 velocity.x = 0;
             }
-        } else if (velocity.x > 0) {
+        }
+        else if (velocity.x > 0)
+        {
             velocity.x -= FLOOR_FRICTION * Time.fixedDeltaTime * (inWater ? 2f : 1f);
             // stops friction changing player from sliding left to right, instead they should stop
-            if (velocity.x < 0) {
+            if (velocity.x < 0)
+            {
                 velocity.x = 0;
             }
         }
 
         velocity.y -= GRAVITY * Time.fixedDeltaTime * (inWater ? 0.1f : 1f);
-        if (velocity.y < -TERMINAL_VELOCITY) {
+        if (velocity.y < -TERMINAL_VELOCITY)
+        {
             velocity.y = -TERMINAL_VELOCITY;
         }
 
 
         velocity.x += moveHorizontal * RUN_SPEED_ACCELERATION * Time.fixedDeltaTime * (inWater ? 0.5f : 1f);
-        if (velocity.x > MAX_RUN_SPEED * (inWater ? 0.5f : 1f)) {
+        if (velocity.x > MAX_RUN_SPEED * (inWater ? 0.5f : 1f))
+        {
             velocity.x = MAX_RUN_SPEED * (inWater ? 0.5f : 1f);
-        } else if (velocity.x < -(MAX_RUN_SPEED * (inWater ? 0.5f : 1f))) {
+        }
+        else if (velocity.x < -(MAX_RUN_SPEED * (inWater ? 0.5f : 1f)))
+        {
             velocity.x = -(MAX_RUN_SPEED * (inWater ? 0.5f : 1f));
         }
-        if (jump) {
+        if (jump)
+        {
             velocity.y = JUMP_ACCELERATION;
             AudioController.PlaySound("Jump");
         }
@@ -168,17 +216,20 @@ public class PlayerController : MonoBehaviour {
         hitVelocity.x = 0;
         jump = false;
         falling = velocity.y < 0 && !grounded;
-        if (health <= 0) {
+        if (health <= 0)
+        {
             Die();
         }
-
+        CheckOutOfBounds();
+        tileSwitch.CheckPosition();
     }
 
     //OnTriggerEnter2D is called whenever this object overlaps with a trigger collider.
     void OnTriggerEnter2D(Collider2D obj)
     {
         //Check the provided Collider2D parameter other to see if it is tagged "PickUp", if it is...
-        if (obj.gameObject.CompareTag("Projectile")) {
+        if (obj.gameObject.CompareTag("Projectile"))
+        {
             hitVelocity = obj.GetComponent<Rigidbody2D>().velocity;
             obj.gameObject.SetActive(false);
             AudioController.PlaySound("PlayerHit");
@@ -186,11 +237,10 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-
-
-
-	public void OnLanded(Vector2 velocity){
-        if (velocity.y <= -(TERMINAL_VELOCITY / 10)) {
+    public void OnLanded(Vector2 velocity)
+    {
+        if (velocity.y <= -(TERMINAL_VELOCITY / 10))
+        {
             AudioController.PlaySound("PlayerHit");
         }
         airbourne = false;
@@ -202,7 +252,8 @@ public class PlayerController : MonoBehaviour {
 
     private void OrientPlayer()
     {
-        if ((moveHorizontal > 0 && !facingRight) || (moveHorizontal < 0 && facingRight)){
+        if ((moveHorizontal > 0 && !facingRight) || (moveHorizontal < 0 && facingRight))
+        {
             facingRight = !facingRight;
             Vector3 scale = transform.localScale;
             scale.x *= -1;
@@ -210,12 +261,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    public bool Grounded() {
+    public bool Grounded()
+    {
         // check left foot
         Vector3 bottomPosition = leftFoot.transform.position;
         // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
-        if (hit.collider) {
+        if (hit.collider)
+        {
             return true;
         }
 
@@ -226,16 +279,20 @@ public class PlayerController : MonoBehaviour {
         return hit.collider != null;
     }
 
-    public bool OnWater() {
+    public bool OnWater()
+    {
         return false;
     }
 
-    public int GetHealth() {
+    public int GetHealth()
+    {
         return health;
     }
 
-    public void Die() {
-        if (!dying) {
+    public void Die()
+    {
+        if (!dying)
+        {
             dying = true;
             AudioController.PlaySound("GameOver");
             KillObject kill = gameObject.AddComponent<KillObject>();
@@ -243,41 +300,53 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-	void checkPush(GameObject crate)
-	{
-		if (Mathf.Abs(crate.GetComponent<Rigidbody2D>().velocity.x) > 0.5f)
-		{
-			if (!pushing)
-			{
-				AudioController.PlaySound("PushBox");
-				AudioController.ChangeVolume("PushBox", PlayerPrefs.GetFloat("SoundVolume", 1));
-				pushing = true;
-			}
-			
-		}
-		else
-		{ 
-			AudioController.ChangeVolume("PushBox", 0);
-			pushing = false;
-		}
-	}
+    void checkPush(GameObject crate)
+    {
+        if (Mathf.Abs(crate.GetComponent<Rigidbody2D>().velocity.x) > 0.5f)
+        {
+            if (!pushing)
+            {
+                AudioController.PlaySound("PushBox");
+                AudioController.ChangeVolume("PushBox", PlayerPrefs.GetFloat("SoundVolume", 1));
+                pushing = true;
+            }
 
-	public void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.gameObject.tag == "crate")
-		{
-			pushObject = collision.gameObject;
-			checkCrate = true;
-		}
-	}
+        }
+        else
+        {
+            AudioController.ChangeVolume("PushBox", 0);
+            pushing = false;
+        }
+    }
 
-	private void OnCollisionExit2D(Collision2D collision)
-	{
-		if (collision.gameObject.tag == "crate")
-		{
-			checkCrate = false;
-			pushing = false;
-			AudioController.ChangeVolume("PushBox", 0);
-		}
-	}
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "crate")
+        {
+            pushObject = collision.gameObject;
+            checkCrate = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "crate")
+        {
+            checkCrate = false;
+            pushing = false;
+            AudioController.ChangeVolume("PushBox", 0);
+        }
+    }
+
+    void CheckOutOfBounds()
+    {
+        if (player.transform.position.y < lowerBound - respawnHeight)
+        {
+            Respawn();
+        }
+    }
+    void Respawn()
+    {
+        SceneLoader.ReloadCurrentScene();
+    }
 }

@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 4354876668035933472}
   - component: {fileID: 4354876668035933487}
   - component: {fileID: 4347691630531585333}
-  - component: {fileID: 8266226662989609304}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -53,6 +52,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -141,6 +141,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55af6572530184842ac7e23d15239a99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneLoader: {fileID: 0}
+  paused: 0
 --- !u!114 &4354876668035933487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +158,7 @@ MonoBehaviour:
   tileStates:
   - {fileID: 0}
   - {fileID: 0}
+  activeTileSet: 0
   ladder: {fileID: 0}
   vol: {fileID: 0}
   swapTransitionTime: 0.5
@@ -163,7 +166,12 @@ MonoBehaviour:
   minAlpha: 0.2
   hueChange: 30
   frontAlph: 1
-  backAlph: 0.2
+  crate: {fileID: 0}
+  badTileNames:
+  - jungleTilemap_9
+  - jungleTilemap_19
+  - jungleTilemap_8
+  - jungleTilemap_18
 --- !u!61 &4347691630531585333
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -190,18 +198,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15, y: 0.5}
   m_EdgeRadius: 0.15
---- !u!114 &8266226662989609304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4354876668035933478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8833ba7f05d6c645a1ddbeb5060e5a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4354876669132535574
 GameObject:
   m_ObjectHideFlags: 0
