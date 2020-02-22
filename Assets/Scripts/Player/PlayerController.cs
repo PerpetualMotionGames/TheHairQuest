@@ -11,8 +11,6 @@ public class PlayerController : MonoBehaviour
     private TileSwitch tileSwitch;
     private float lowerBound;
 
-
-
     private bool pushing = false;
     private GameObject pushObject;
     private bool checkCrate = false;
@@ -33,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private int health;
     private bool inWater = false;
     private float timeInWater = 0;
+    private bool onStairs = false;
     private bool dying = false;
     // gravity increases velocity of an object at 9.8 meters per second
     // example, after 3 seconds of free fall, an object will be travelling at 9.8 * 3 meters per second
@@ -66,9 +65,9 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         health = 3;
 
-		cameraBounds = GameObject.Find("CameraBounds");
-		lowerBound = cameraBounds.transform.position.y - cameraBounds.transform.localScale.y/2;
-		player = GameObject.Find("Player");
+        cameraBounds = GameObject.Find("CameraBounds");
+        lowerBound = cameraBounds.transform.position.y - cameraBounds.transform.localScale.y / 2;
+        player = GameObject.Find("Player");
         tileSwitch = player.GetComponent<TileSwitch>();
     }
 
@@ -139,7 +138,7 @@ public class PlayerController : MonoBehaviour
         TileBase leftFootTile = tiles.GetTile(tiles.WorldToCell(leftFoot.transform.position));
         TileBase rightFootTile = tiles.GetTile(tiles.WorldToCell(rightFoot.transform.position));
 
-
+        // check if in water
         if ((leftFootTile != null && (leftFootTile.name == "jungleTilemap_9" || leftFootTile.name == "jungleTilemap_19" || leftFootTile.name == "jungleTilemap_8" || leftFootTile.name == "jungleTilemap_18")) ||
             (rightFootTile != null && (rightFootTile.name == "jungleTilemap_9" || rightFootTile.name == "jungleTilemap_19" || rightFootTile.name == "jungleTilemap_8" || rightFootTile.name == "jungleTilemap_18")))
         {
@@ -211,15 +210,53 @@ public class PlayerController : MonoBehaviour
             velocity.y = JUMP_ACCELERATION;
             AudioController.PlaySound("Jump");
         }
+
+        // check if on stairs
+        if ((leftFootTile != null && (leftFootTile.name == "jungleTilemap_26" || leftFootTile.name == "jungleTilemap_27")) ||
+            (rightFootTile != null && (rightFootTile.name == "jungleTilemap_26" || rightFootTile.name == "jungleTilemap_27")))
+        {
+
+            onStairs = true;
+            // check stair direction
+            bool stairsLeft = (leftFootTile != null && leftFootTile.name == "jungleTilemap_26") || (rightFootTile != null && rightFootTile.name == "jungleTilemap_26");
+            Debug.Log("stairsLeft: " + stairsLeft + " x: " + velocity.x);
+            // travelling up the stairs
+            if ((velocity.x < 0 && stairsLeft) || (velocity.x > 0 && !stairsLeft))
+            {
+                velocity.y = Mathf.Abs(velocity.x) * 0.8f;
+                // travelling down the stairs
+            }
+            else if ((velocity.x < 0 && !stairsLeft) || (velocity.x > 0 && stairsLeft))
+            {
+                velocity.y = Mathf.Abs(velocity.x) * -1;
+                // standing still
+            }
+            else
+            {
+                // if we leave gravity applied, because we're on a hill we will slide down the stairs
+                velocity.y = 0;
+            }
+        }
+        else
+        {
+            // if you've just left the stairs at the top, stop player going airbourne
+            if (onStairs && velocity.y > 0)
+            {
+                velocity.y = 0;
+            }
+            onStairs = false;
+        }
+
         rb2d.velocity = velocity;
         previousVelocity = velocity;
         hitVelocity.x = 0;
         jump = false;
-        falling = velocity.y < 0 && !grounded;
+        falling = velocity.y < 0 && !grounded && !onStairs;
         if (health <= 0)
         {
             Die();
         }
+
         CheckOutOfBounds();
         tileSwitch.CheckPosition();
     }

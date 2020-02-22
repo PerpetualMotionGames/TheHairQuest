@@ -233,9 +233,11 @@ public class TileSwitch : MonoBehaviour
     public void CheckPosition()
     {
         //if you shift whilst on top of a tile die - need to do this for water and lava too
-        TileBase hitTile = tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(player.transform.position));
+		Vector3 playerPosition = player.transform.position;
+        TileBase hitTile = tileStates[activeTileSet].GetTile(tileStates[activeTileSet].WorldToCell(playerPosition));
+		Tile.ColliderType colliderType = tileStates[activeTileSet].GetColliderType(tileStates[activeTileSet].WorldToCell(playerPosition));
 
-        if (hitTile != null && tileStates[activeTileSet].GetColliderType(tileStates[activeTileSet].WorldToCell(player.transform.position)) != Tile.ColliderType.None) 
+        if (hitTile != null && colliderType != Tile.ColliderType.None && colliderType != Tile.ColliderType.Sprite) 
         {
             dying = true;
             player.GetComponent<PlayerController>().Die();
